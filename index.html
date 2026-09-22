@@ -6,20 +6,20 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Bridal Billing">
-  <title>Hairstylish | Bridal Billing & Invoice Studio</title>
+  <title>Deepz Hairstylist | Bridal Billing & Invoice Studio</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Inter & Cormorant Garamond -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- QRCode.js CDN for dynamic UPI QR code -->
+  <!-- QRCode.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
@@ -27,9 +27,9 @@
       theme: {
         extend: {
           fontFamily: {
-            serif: ['"Playfair Display"', 'serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
             display: ['"Cormorant Garamond"', 'serif'],
-            sans: ['"Montserrat"', 'sans-serif'],
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
           },
           colors: {
             gold: {
@@ -51,18 +51,22 @@
   </script>
 
   <style>
-    /* Prevent iOS Safari auto-zoom on inputs */
+    * {
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      text-rendering: geometricPrecision !important;
+    }
+
     @media (max-width: 768px) {
       input, select, textarea {
         font-size: 16px !important;
       }
     }
 
-    /* Print: strict single page without page break */
     @media print {
       @page {
         size: A4 portrait;
-        margin: 6mm 8mm;
+        margin: 8mm 10mm;
       }
       body {
         background: #fff !important;
@@ -87,7 +91,6 @@
         padding: 0 !important;
         margin: 0 !important;
         page-break-inside: avoid !important;
-        break-inside: avoid !important;
       }
       * {
         -webkit-print-color-adjust: exact !important;
@@ -112,7 +115,7 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-stone-900 hover:bg-black text-white text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
+        <button onclick="triggerPrintPDF()" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-stone-900 hover:bg-black text-white text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
           <i data-lucide="printer" class="w-3.5 h-3.5"></i>
           <span>Save PDF / Print</span>
         </button>
@@ -152,15 +155,15 @@
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div class="col-span-2">
               <label class="block font-medium text-stone-600 mb-0.5">Brand / Stylist Name</label>
-              <input type="text" id="in_stylist" placeholder="e.g. Deepz Hairstylist" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded text-stone-800">
+              <input type="text" id="in_stylist" value="Deepz Hairstylist" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded text-stone-800">
             </div>
             <div class="col-span-2">
               <label class="block font-medium text-stone-600 mb-0.5">Tagline / Subheading</label>
-              <input type="text" id="in_tagline" placeholder="e.g. Bridal Hairstyling & Beauty Services" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_tagline" placeholder="e.g. Bridal Hairstyling & Saree Draping" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Phone Number</label>
-              <input type="tel" inputmode="tel" id="in_studio_phone" placeholder="e.g. 9876543210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="tel" inputmode="tel" id="in_studio_phone" value="+91 98945 70313" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Email</label>
@@ -168,7 +171,7 @@
             </div>
             <div class="col-span-2">
               <label class="block font-medium text-stone-600 mb-0.5">City, State / Address</label>
-              <input type="text" id="in_studio_city" placeholder="e.g. Tiruppur" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_studio_city" value="Tiruppur" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
           </div>
         </div>
@@ -181,7 +184,7 @@
           <div class="grid grid-cols-3 gap-2 text-xs">
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Invoice #</label>
-              <input type="text" id="in_inv_no" placeholder="BH-012" oninput="updateInvoice()" class="w-full px-2 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_inv_no" placeholder="BH-024" oninput="updateInvoice()" class="w-full px-2 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Invoice Date</label>
@@ -233,9 +236,7 @@
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line
             </button>
           </div>
-          <div id="service_input_rows" class="space-y-2">
-            <!-- Dynamic items -->
-          </div>
+          <div id="service_input_rows" class="space-y-2"></div>
         </div>
 
         <!-- Totals & Payment -->
@@ -263,23 +264,23 @@
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div class="col-span-2">
               <label class="block font-medium text-stone-600 mb-0.5">UPI ID (Creates Dynamic QR)</label>
-              <input type="text" id="in_upi" placeholder="e.g. test@oksbi" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_upi" value="deeparubinipalanisamy@oksbi" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Bank Name</label>
-              <input type="text" id="in_bank" placeholder="e.g. SBI" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_bank" value="Karur Vysya Bank" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Account Name</label>
-              <input type="text" id="in_acc_name" placeholder="e.g. Test" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_acc_name" value="Deeparubini P" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Account Number</label>
-              <input type="text" inputmode="numeric" id="in_acc_no" placeholder="e.g. 50215896553" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" inputmode="numeric" id="in_acc_no" value="1643155000112456" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">IFSC Code</label>
-              <input type="text" id="in_ifsc" placeholder="e.g. SBIN0021" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded uppercase">
+              <input type="text" id="in_ifsc" value="KVBL0001643" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded uppercase">
             </div>
           </div>
         </div>
@@ -291,29 +292,29 @@
           </div>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <label class="block font-medium text-stone-600 mb-0.5">Instagram</label>
-              <input type="text" id="in_insta" placeholder="e.g. @deepzhairstylisht" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <label class="block font-medium text-stone-600 mb-0.5">Instagram Handle</label>
+              <input type="text" id="in_insta" placeholder="deepzhairstylist" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Footer Phone</label>
-              <input type="tel" inputmode="tel" id="in_footer_phone" placeholder="e.g. 9876543210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="tel" inputmode="tel" id="in_footer_phone" value="+91 98945 70313" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
           </div>
         </div>
 
       </section>
 
-      <!-- PREVIEW COLUMN (Clean, Gap-Free Document) -->
-      <section id="preview-panel" class="hidden lg:block lg:col-span-7">
-        <div id="invoice-doc" class="invoice-container bg-white border border-stone-200 shadow-xl rounded-lg w-full max-w-[210mm] mx-auto p-6 sm:p-7 text-stone-900 space-y-4">
+      <!-- PREVIEW COLUMN -->
+      <section id="preview-panel" class="hidden lg:flex lg:col-span-7 justify-center">
+        <div id="invoice-doc" class="invoice-container bg-white border border-stone-200 shadow-xl rounded-lg w-full max-w-[210mm] p-6 sm:p-7 text-stone-900 space-y-3.5">
           
           <!-- HEADER -->
-          <div class="border-b-2 border-gold-300 pb-3 flex justify-between items-start gap-3">
+          <div class="border-b-2 border-gold-300 pb-2.5 flex justify-between items-start gap-3">
             <div>
               <h1 id="out_stylist" class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-900 leading-tight">Deepz Hairstylist</h1>
-              <p id="out_tagline" class="font-display text-xs italic text-gold-700 tracking-wide">Bridal Hairstyling & Beauty Services</p>
-              <div class="flex flex-wrap items-center gap-x-1.5 text-[10px] text-stone-500 mt-1">
-                <span id="out_studio_phone">-</span>
+              <p id="out_tagline" class="font-display text-xs italic text-gold-700 tracking-wide font-medium">Bridal Hairstyling & Saree Draping</p>
+              <div class="flex flex-wrap items-center gap-x-1.5 text-[10px] text-stone-600 mt-1 font-normal">
+                <span id="out_studio_phone">+91 98945 70313</span>
                 <span>•</span>
                 <span id="out_studio_email">-</span>
                 <span>•</span>
@@ -358,9 +359,7 @@
                   <th class="py-1 px-2 text-right font-medium w-20">Amount</th>
                 </tr>
               </thead>
-              <tbody id="invoice_services_table" class="divide-y divide-stone-100 text-stone-800">
-                <!-- Dynamic Items -->
-              </tbody>
+              <tbody id="invoice_services_table" class="divide-y divide-stone-100 text-stone-800"></tbody>
             </table>
           </div>
 
@@ -390,24 +389,25 @@
             </div>
           </div>
 
-          <!-- PAYMENT DETAILS & UPI QR -->
-          <div class="border border-stone-200 rounded p-2.5 flex justify-between items-center bg-white">
-            <div class="text-[9.5px] space-y-0.5 text-stone-700 max-w-[65%]">
-              <p class="text-[8px] uppercase tracking-wider font-bold text-gold-800 mb-0.5">PAYMENT DETAILS</p>
-              <p><span class="font-semibold text-stone-900">UPI ID:</span> <span id="out_upi">-</span></p>
-              <p><span class="font-semibold text-stone-900">Bank:</span> <span id="out_bank">-</span></p>
-              <p><span class="font-semibold text-stone-900">A/C Name:</span> <span id="out_acc_name">-</span></p>
-              <p><span class="font-semibold text-stone-900">A/C No:</span> <span id="out_acc_no">-</span></p>
-              <p><span class="font-semibold text-stone-900">IFSC:</span> <span id="out_ifsc">-</span></p>
+          <!-- PAYMENT DETAILS & ENLARGED UPI QR -->
+          <div class="border border-stone-200 rounded-lg p-3 flex justify-between items-center bg-white shadow-sm">
+            <div class="text-[9.5px] space-y-1 text-stone-700 max-w-[58%]">
+              <p class="text-[8.5px] uppercase tracking-wider font-bold text-gold-800 mb-0.5">PAYMENT DETAILS</p>
+              <p><span class="font-semibold text-stone-900">UPI ID:</span> <span id="out_upi">deeparubinipalanisamy@oksbi</span></p>
+              <p><span class="font-semibold text-stone-900">Bank:</span> <span id="out_bank">Karur Vysya Bank</span></p>
+              <p><span class="font-semibold text-stone-900">A/C Name:</span> <span id="out_acc_name">Deeparubini P</span></p>
+              <p><span class="font-semibold text-stone-900">A/C No:</span> <span id="out_acc_no">1643155000112456</span></p>
+              <p><span class="font-semibold text-stone-900">IFSC:</span> <span id="out_ifsc">KVBL0001643</span></p>
             </div>
-            <div class="flex flex-col items-center justify-center p-1.5 bg-stone-50 border border-stone-200 rounded">
-              <div id="qrcode" class="w-14 h-14 flex items-center justify-center"></div>
-              <span class="text-[7.5px] font-bold tracking-tight uppercase text-stone-500 mt-1">UPI Scan</span>
+            <!-- Enlarged QR badge: 120x120px with higher contrast border -->
+            <div class="flex flex-col items-center justify-center p-2 bg-stone-50 border border-stone-300 rounded-lg shadow-sm">
+              <div id="qrcode" class="w-[120px] h-[120px] flex items-center justify-center bg-white p-1 rounded border border-stone-20"></div>
+              <span class="text-[8.5px] font-bold tracking-wider uppercase text-gold-800 mt-1.5">Scan to Pay UPI</span>
             </div>
           </div>
 
-          <!-- TERMS & CONDITIONS (Directly below payment details with no empty gap) -->
-          <div class="border-t border-stone-200 pt-2.5 text-[8.5px] text-stone-500 leading-tight">
+          <!-- TERMS & CONDITIONS -->
+          <div class="border-t border-stone-200 pt-2 text-[8.5px] text-stone-500 leading-tight">
             <p class="font-bold text-stone-800 uppercase tracking-wider text-[8px] mb-1">TERMS & CONDITIONS</p>
             <ol class="list-decimal pl-3 space-y-0.5">
               <li>Booking is confirmed after receipt of the advance payment.</li>
@@ -418,12 +418,15 @@
               <li>Additional services requested on the event day will be charged separately.</li>
             </ol>
             
+            <!-- FOOTER WITH CLICKABLE URL -->
             <div class="mt-2.5 pt-1.5 border-t border-stone-200 flex justify-between items-center text-[9px] font-medium text-stone-700">
               <span class="font-serif italic text-gold-800">Thank you for choosing us for your special day.</span>
               <div class="flex items-center gap-2">
-                <span id="out_insta"></span>
+                <a id="out_insta_link" href="https://instagram.com/deepzhairstylist" target="_blank" rel="noopener noreferrer" class="text-gold-700 underline font-semibold">
+                  Instagram: @deepzhairstylist
+                </a>
                 <span>•</span>
-                <span id="out_footer_phone"></span>
+                <span id="out_footer_phone">+91 98945 70313</span>
               </div>
             </div>
           </div>
@@ -435,6 +438,8 @@
   </main>
 
   <script>
+    const INSTAGRAM_URL = "https://instagram.com/deepzhairstylist";
+
     let services = [
       { desc: "Bridal Hairstyling", qty: "", rate: "" },
       { desc: "Hair Trial", qty: "", rate: "" },
@@ -508,8 +513,8 @@
       const sCity = document.getElementById("in_studio_city").value.trim();
 
       document.getElementById("out_stylist").innerText = stylist || "Deepz Hairstylist";
-      document.getElementById("out_tagline").innerText = tagline || "Bridal Hairstyling & Beauty Services";
-      document.getElementById("out_studio_phone").innerText = sPhone || "-";
+      document.getElementById("out_tagline").innerText = tagline || "Bridal Hairstyling & Saree Draping";
+      document.getElementById("out_studio_phone").innerText = sPhone || "+91 98945 70313";
       document.getElementById("out_studio_email").innerText = sEmail || "-";
       document.getElementById("out_studio_city").innerText = sCity || "-";
 
@@ -572,30 +577,40 @@
       document.getElementById("out_acc_no").innerText = document.getElementById("in_acc_no").value.trim() || "-";
       document.getElementById("out_ifsc").innerText = document.getElementById("in_ifsc").value.trim() || "-";
 
-      document.getElementById("out_insta").innerText = document.getElementById("in_insta").value.trim() || "";
-      document.getElementById("out_footer_phone").innerText = document.getElementById("in_footer_phone").value.trim() || "";
+      const footerPhone = document.getElementById("in_footer_phone").value.trim();
+      document.getElementById("out_footer_phone").innerText = footerPhone || "+91 98945 70313";
 
-      renderQRCode(upi, balance, stylist || "Deepz Hairstylish");
+      renderQRCode(upi, balance, stylist || "Deepz Hairstylist");
     }
 
     function renderQRCode(upiId, balance, name) {
       const qrDiv = document.getElementById("qrcode");
       qrDiv.innerHTML = "";
       if (!upiId) {
-        qrDiv.innerHTML = '<span class="text-[7.5px] text-stone-400 text-center px-1">UPI QR</span>';
+        qrDiv.innerHTML = '<span class="text-[8px] text-stone-400 text-center px-1">UPI QR</span>';
         return;
       }
       const payeeName = encodeURIComponent(name);
       const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${payeeName}&am=${balance}&cu=INR&tn=BridalHairInvoice`;
       
+      // Increased QR canvas size to 80x80px for instant mobile camera detection
       qrcodeInstance = new QRCode(qrDiv, {
         text: upiUrl,
-        width: 56,
-        height: 56,
+        width: 120,
+        height: 120,
         colorDark: "#1C1917",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.M
       });
+    }
+
+    function triggerPrintPDF() {
+      const brideName = document.getElementById("in_bride_name").value.trim() || "Bride";
+      const invNo = document.getElementById("in_inv_no").value.trim() || "INV";
+      const oldTitle = document.title;
+      document.title = `${brideName}_${invNo}`;
+      window.print();
+      document.title = oldTitle;
     }
 
     function shareViaWhatsApp() {
@@ -610,6 +625,13 @@
         `Thank you for choosing us for your special day! Here are the details for Invoice #${invNo}:\n` +
         `• Balance Due: ${balance}\n` +
         (upi ? `• UPI Payment ID: ${upi}\n\n` : `\n`) +
+        `Bank Details:\n` +
+        `• Bank: Karur Vysya Bank\n` +
+        `• A/C Name: Deeparubini P\n` +
+        `• A/C No: 1643155000112456\n` +
+        `• IFSC: KVBL0001643\n` +
+        `• Contact: +91 98945 70313\n\n` +
+        `Follow our work: ${INSTAGRAM_URL}\n\n` +
         `Please settle the balance on or before the event date. Looking forward to styling you!`
       );
 
@@ -618,7 +640,15 @@
     }
 
     function resetFormToBlank() {
-      document.querySelectorAll("input").forEach(i => i.value = "");
+      document.querySelectorAll("input").forEach(i => {
+        if (i.id === "in_bank") i.value = "Karur Vysya Bank";
+        else if (i.id === "in_ifsc") i.value = "KVBL0001643";
+        else if (i.id === "in_acc_no") i.value = "1643155000112456";
+        else if (i.id === "in_upi") i.value = "deeparubinipalanisamy@oksbi";
+        else if (i.id === "in_acc_name") i.value = "Deeparubini P";
+        else if (i.id === "in_studio_phone" || i.id === "in_footer_phone") i.value = "+91 98945 70313";
+        else i.value = "";
+      });
       services = [
         { desc: "Bridal Hairstyling", qty: "", rate: "" },
         { desc: "Hair Trial", qty: "", rate: "" },
