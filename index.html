@@ -2,56 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LuxeBride Artistry | Bridal Billing & Invoice Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Bridal Billing">
+  <title>Deepz Hairstylish | Bridal Billing & Invoice Studio</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Fonts: Playfair Display (Luxury Editorial Serif) & Plus Jakarta Sans / Inter -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   
-  <!-- FontAwesome 6 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- QRCode.js CDN for dynamic UPI QR code -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            serif: ['"Playfair Display"', 'Georgia', 'serif'],
-            cormorant: ['"Cormorant Garamond"', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
+            serif: ['"Playfair Display"', 'serif'],
+            display: ['"Cormorant Garamond"', 'serif'],
+            sans: ['"Montserrat"', 'sans-serif'],
           },
           colors: {
-            rosegold: {
-              50: '#fdf9f8',
-              100: '#f9f1ee',
-              200: '#f3e3dd',
-              300: '#e7cac0',
-              400: '#d7a898',
-              500: '#c58572',
-              600: '#b06a57',
-              700: '#925343',
-              800: '#7a4639',
-              900: '#643c32',
-            },
-            champagne: {
-              50: '#fbf9f4',
-              100: '#f6f1e6',
-              200: '#ede0cb',
-              300: '#e1cbab',
-              400: '#d3b286',
-              500: '#c69d67',
-              600: '#b38453',
-            },
-            charcoal: {
-              800: '#2c2727',
-              900: '#1e1a1b',
+            gold: {
+              50: '#FAF8F5',
+              100: '#F4EFE6',
+              200: '#E8DCCB',
+              300: '#D7C3A8',
+              400: '#C2A380',
+              500: '#B08958',
+              600: '#9B7144',
+              700: '#7D5834',
+              800: '#64442A',
+              900: '#4D3421',
             }
           }
         }
@@ -60,1257 +51,596 @@
   </script>
 
   <style>
-    /* Custom Print CSS for Clean A4 Bridal Invoice */
-    @media print {
-      body {
-        background: #ffffff !important;
-        color: #1e1a1b !important;
-        padding: 0 !important;
-        margin: 0 !important;
+    /* iOS input zoom prevention: must be 16px minimum on touch */
+    @media (max-width: 768px) {
+      input, select, textarea {
+        font-size: 16px !important;
       }
-      .no-print, header, #editorPanel, #tabBar, #notificationToast {
+    }
+
+    /* Print styling: Strict Single Page A4 Fit */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 5mm 7mm;
+      }
+      body {
+        background: #fff !important;
+        color: #111 !important;
+        font-size: 10.5px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .no-print {
         display: none !important;
       }
-      #previewSection {
+      #preview-panel {
+        display: block !important;
         width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
         padding: 0 !important;
+        margin: 0 !important;
       }
-      #printInvoiceDoc {
+      .invoice-container {
         box-shadow: none !important;
         border: none !important;
         width: 100% !important;
         max-width: 100% !important;
-        padding: 2.2rem !important;
+        padding: 0 !important;
         margin: 0 !important;
-        border-radius: 0 !important;
       }
-      .page-break {
-        page-break-after: auto;
+      .page-break-avoid {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
-    }
-
-    /* Subtle custom scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #faf7f5;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #e2d1c9;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #c58572;
-    }
-
-    .luxury-shadow {
-      box-shadow: 0 10px 30px -10px rgba(181, 122, 104, 0.12), 0 20px 25px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    .gold-border {
-      border-color: #eedccf;
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
     }
   </style>
 </head>
-<body class="bg-[#faf7f5] text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-rosegold-200 selection:text-rosegold-900">
+<body class="bg-stone-100 text-stone-800 font-sans antialiased min-h-screen pb-20 lg:pb-6">
 
-  <!-- Top Studio Header -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-rosegold-200/60 sticky top-0 z-40 transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16 sm:h-20">
-        
-        <!-- Brand identity -->
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-rosegold-600 via-rosegold-500 to-champagne-400 flex items-center justify-center text-white shadow-md shadow-rosegold-200">
-            <i class="fa-solid fa-gem text-sm sm:text-base"></i>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="font-serif font-bold text-lg sm:text-xl text-stone-900 tracking-tight">BillCraft Bridal</span>
-              <span class="text-[10px] tracking-widest uppercase font-semibold bg-rosegold-100 text-rosegold-700 px-2 py-0.5 rounded-full border border-rosegold-200">Haute Studio</span>
-            </div>
-            <p class="text-[11px] text-stone-500 hidden sm:block">Bridal Hairstyling & Beauty Invoicing System</p>
-          </div>
+  <!-- Top App Navigation -->
+  <header class="no-print bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40 px-3 py-2.5 sm:px-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-gold-500/15 flex items-center justify-center text-gold-600">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
         </div>
-
-        <!-- Navigation Tabs -->
-        <div id="tabBar" class="flex items-center bg-stone-100/80 p-1 rounded-xl border border-stone-200/60">
-          <button id="navEditorBtn" onclick="switchMainTab('editor')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 bg-white text-stone-900 shadow-xs">
-            <i class="fa-solid fa-wand-magic-sparkles text-rosegold-500 text-xs"></i>
-            <span>Invoice Builder</span>
-          </button>
-          <button id="navHistoryBtn" onclick="switchMainTab('history')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-stone-600 hover:text-stone-900 transition-all flex items-center gap-2">
-            <i class="fa-solid fa-clock-rotate-left text-xs"></i>
-            <span>Bride Bookings</span>
-            <span id="savedCountBadge" class="bg-rosegold-100 text-rosegold-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">0</span>
-          </button>
+        <div>
+          <h1 class="font-serif text-sm sm:text-base font-bold tracking-tight text-stone-900 leading-tight">Bridal Billing</h1>
+          <span class="text-[9px] sm:text-[10px] tracking-wider uppercase font-semibold text-stone-500 block">Hairstyling Suite</span>
         </div>
+      </div>
 
-        <!-- Action Buttons -->
-        <div class="flex items-center gap-2 sm:gap-3">
-          <button onclick="resetToSampleInvoice()" title="Reset to default luxury template" class="p-2 sm:px-3 sm:py-2 text-stone-600 bg-stone-100 hover:bg-stone-200 text-xs font-semibold rounded-xl transition flex items-center gap-1.5">
-            <i class="fa-solid fa-arrow-rotate-left"></i>
-            <span class="hidden md:inline">Reset</span>
-          </button>
-
-          <button onclick="shareViaWhatsApp()" class="px-3 sm:px-3.5 py-2 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition flex items-center gap-1.5 shadow-2xs">
-            <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
-            <span class="hidden sm:inline">WhatsApp</span>
-          </button>
-
-          <button onclick="saveCurrentInvoice()" class="px-3.5 sm:px-4 py-2 text-xs font-semibold text-white bg-stone-900 hover:bg-stone-800 active:scale-95 rounded-xl shadow-xs transition flex items-center gap-2">
-            <i class="fa-solid fa-bookmark text-[11px] text-rosegold-300"></i>
-            <span>Save</span>
-          </button>
-
-          <button onclick="window.print()" class="px-3.5 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-rosegold-600 to-rosegold-500 hover:from-rosegold-700 hover:to-rosegold-600 active:scale-95 rounded-xl shadow-md shadow-rosegold-200 transition flex items-center gap-2">
-            <i class="fa-solid fa-print text-xs"></i>
-            <span class="hidden sm:inline">Print / PDF</span>
-          </button>
-        </div>
-
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 bg-stone-900 hover:bg-black text-white text-[11px] sm:text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span>PDF / Print</span>
+        </button>
+        <button onclick="shareViaWhatsApp()" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">WhatsApp</span>
+        </button>
+        <button onclick="resetFormToBlank()" class="inline-flex items-center p-1.5 sm:px-2.5 sm:py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-medium rounded-md transition" title="Clear All">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- Interactive Notification Toast -->
-  <div id="notificationToast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="flex items-center gap-3 bg-stone-900 text-stone-100 px-4 py-3 rounded-2xl shadow-2xl border border-stone-700 text-xs sm:text-sm">
-      <i id="toastIcon" class="fa-solid fa-circle-check text-rosegold-400"></i>
-      <span id="toastMsg" class="font-medium">Notification message</span>
-    </div>
+  <!-- Mobile Floating Segment Switcher (Forms vs Live Preview) -->
+  <div class="no-print lg:hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-40 bg-stone-900/90 backdrop-blur-md p-1 rounded-full shadow-lg border border-stone-700 flex items-center gap-1">
+    <button id="tab-btn-form" onclick="switchMobileTab('form')" class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5">
+      <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit Details
+    </button>
+    <button id="tab-btn-preview" onclick="switchMobileTab('preview')" class="px-4 py-1.5 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5">
+      <i data-lucide="eye" class="w-3.5 h-3.5"></i> View Invoice
+    </button>
   </div>
 
-  <!-- Main View Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-
-    <!-- TAB 1: BUILDER & LIVE PREVIEW -->
-    <div id="tabViewEditor" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+  <!-- Main Work Area -->
+  <main class="max-w-7xl mx-auto p-3 sm:p-5 lg:p-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
       
-      <!-- LEFT COLUMN: Studio Invoice Inputs (7 Cols) -->
-      <section id="editorPanel" class="lg:col-span-6 space-y-6">
-
-        <!-- Hairstylist / Brand Profile Card -->
-        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-rosegold-200/80 luxury-shadow space-y-4">
-          <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-rosegold-500"></span>
-              <h2 class="font-serif font-bold text-base text-stone-900">Brand & Artist Profile</h2>
-            </div>
-            <span class="text-[11px] font-semibold text-rosegold-600 bg-rosegold-50 px-2 py-0.5 rounded-md">Header Info</span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div>
-              <label class="block text-xs font-semibold text-stone-600 mb-1">Brand / Artist Name</label>
-              <input type="text" id="brandName" value="Aura Bridal Hair & Artistry" oninput="liveUpdate()" class="w-full px-3 py-2 text-xs font-serif font-semibold rounded-xl border border-stone-200 focus:border-rosegold-500 focus:ring-1 focus:ring-rosegold-500 focus:outline-hidden">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-stone-600 mb-1">Tagline / Services</label>
-              <input type="text" id="brandTagline" value="Bridal Hairstyling & Beauty Services" oninput="liveUpdate()" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 focus:border-rosegold-500 focus:ring-1 focus:ring-rosegold-500 focus:outline-hidden">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-500 mb-1">Phone Number</label>
-              <input type="text" id="brandPhone" value="+91 98765 43210" oninput="liveUpdate()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-500 mb-1">Email Address</label>
-              <input type="email" id="brandEmail" value="hello@aurabridalhair.com" oninput="liveUpdate()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-500 mb-1">City, State</label>
-              <input type="text" id="brandLocation" value="Mumbai, Maharashtra" oninput="liveUpdate()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-500 mb-1">Instagram Handle</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 text-xs">@</span>
-                <input type="text" id="brandInstagram" value="aurabridalhair" oninput="liveUpdate()" class="w-full pl-7 pr-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-500 mb-1">Currency Symbol</label>
-              <select id="currencySymbol" onchange="liveUpdate()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-stone-200 bg-white focus:border-rosegold-500 focus:outline-hidden font-mono">
-                <option value="₹" selected>₹ (INR - Indian Rupee)</option>
-                <option value="$">$ (USD - US Dollar)</option>
-                <option value="£">£ (GBP - British Pound)</option>
-                <option value="€">€ (EUR - Euro)</option>
-                <option value="AED ">AED (UAE Dirham)</option>
-                <option value="C$">C$ (CAD - Canadian Dollar)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Invoice Details & Bride (Bill To) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <!-- Invoice Meta -->
-          <div class="bg-white rounded-2xl p-5 border border-rosegold-200/80 luxury-shadow space-y-3">
-            <h3 class="font-serif font-bold text-sm text-stone-900 flex items-center gap-2 border-b border-stone-100 pb-2">
-              <i class="fa-solid fa-file-invoice text-rosegold-500 text-xs"></i> Invoice Details
-            </h3>
-            
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-600 mb-1">Invoice No.</label>
-              <input type="text" id="invoiceNumber" value="INV-001" oninput="liveUpdate()" class="w-full px-3 py-1.5 text-xs font-mono font-bold text-stone-900 rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[11px] font-semibold text-stone-600 mb-1">Invoice Date</label>
-                <input type="date" id="invoiceDate" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold text-stone-600 mb-1">Service / Wedding Date</label>
-                <input type="date" id="serviceDate" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden font-semibold text-rosegold-700">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-600 mb-1">Booking Status</label>
-              <select id="invoiceStatus" onchange="liveUpdate()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-stone-200 bg-white focus:border-rosegold-500 focus:outline-hidden font-semibold">
-                <option value="Advance Received" selected>Advance Received</option>
-                <option value="Fully Settled">Fully Settled</option>
-                <option value="Payment Pending">Payment Pending</option>
-                <option value="Draft / Quote">Draft / Quote</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Bill To (Bride / Client) -->
-          <div class="bg-white rounded-2xl p-5 border border-rosegold-200/80 luxury-shadow space-y-3">
-            <h3 class="font-serif font-bold text-sm text-stone-900 flex items-center gap-2 border-b border-stone-100 pb-2">
-              <i class="fa-solid fa-heart text-rosegold-500 text-xs"></i> Bill To (Bride / Client)
-            </h3>
-
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-600 mb-1">Bride Name</label>
-              <input type="text" id="brideName" value="Pooja Sharma" oninput="liveUpdate()" class="w-full px-3 py-1.5 text-xs font-semibold text-stone-900 rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[11px] font-semibold text-stone-600 mb-1">Phone Number</label>
-                <input type="text" id="bridePhone" value="+91 98201 11223" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold text-stone-600 mb-1">Email</label>
-                <input type="email" id="brideEmail" value="pooja.sharma@gmail.com" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[11px] font-semibold text-stone-600 mb-1">Event Venue</label>
-                <input type="text" id="eventVenue" value="The Grand Heritage Ballroom" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold text-stone-600 mb-1">Location (City, State)</label>
-                <input type="text" id="eventLocation" value="Udaipur, Rajasthan" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Services Table Editor -->
-        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-rosegold-200/80 luxury-shadow space-y-4">
-          <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-            <div>
-              <h3 class="font-serif font-bold text-base text-stone-900">Bridal Services & Rates</h3>
-              <p class="text-[11px] text-stone-500">Edit quantities, rates, or quickly add bridal packages.</p>
-            </div>
-            
-            <!-- Quick Preset Menu -->
-            <div class="flex items-center gap-1.5">
-              <select id="presetServiceSelect" class="text-xs px-2.5 py-1.5 rounded-lg border border-stone-200 bg-stone-50 focus:border-rosegold-500 focus:outline-hidden">
-                <option value="">+ Add Bridal Service...</option>
-                <option value="Bridal Hairstyling|1|22000">Bridal Hairstyling (₹22,000)</option>
-                <option value="Hair Trial (Pre-Bridal)|1|4500">Hair Trial (₹4,500)</option>
-                <option value="Bridesmaid Hairstyling|2|3500">Bridesmaid Hairstyling (₹3,500/ea)</option>
-                <option value="Family Hairstyling (Mother / Relatives)|3|2500">Family Hairstyling (₹2,500/ea)</option>
-                <option value="Travel Charges & Destination Allowance|1|6000">Travel Charges (₹6,000)</option>
-                <option value="Reception Hair Change & Touch-up|1|7000">Reception Hair Change (₹7,000)</option>
-                <option value="Hair Extensions & Floral Styling Accessories|1|3000">Floral & Hair Accessories (₹3,000)</option>
-              </select>
-              <button onclick="addSelectedPresetService()" class="px-3 py-1.5 text-xs font-semibold bg-rosegold-100 text-rosegold-800 hover:bg-rosegold-200 rounded-lg transition">
-                Insert
-              </button>
-            </div>
-          </div>
-
-          <!-- Services List -->
-          <div class="overflow-x-auto -mx-2 sm:mx-0">
-            <table class="w-full text-left text-xs min-w-[500px]">
-              <thead>
-                <tr class="text-stone-400 font-semibold uppercase tracking-wider text-[10px] border-b border-stone-100">
-                  <th class="py-2 px-1 w-5/12">Service Description</th>
-                  <th class="py-2 px-1 w-2/12 text-center">Qty</th>
-                  <th class="py-2 px-1 w-2/12 text-right">Rate</th>
-                  <th class="py-2 px-1 w-2/12 text-right">Amount</th>
-                  <th class="py-2 px-1 w-1/12 text-center"></th>
-                </tr>
-              </thead>
-              <tbody id="servicesFormTableBody" class="divide-y divide-stone-100">
-                <!-- Injected via JavaScript -->
-              </tbody>
-            </table>
-          </div>
-
-          <div class="pt-2">
-            <button onclick="addNewBlankServiceRow()" class="w-full py-2.5 border-2 border-dashed border-rosegold-200 hover:border-rosegold-400 hover:bg-rosegold-50/50 text-rosegold-700 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
-              <i class="fa-solid fa-plus text-xs"></i>
-              <span>+ Add Custom Service Line</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Payment Calculations & Bank / UPI Details -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          
-          <!-- Payment Summary -->
-          <div class="bg-white rounded-2xl p-5 border border-rosegold-200/80 luxury-shadow space-y-3">
-            <h3 class="font-serif font-bold text-sm text-stone-900 border-b border-stone-100 pb-2 flex items-center gap-1.5">
-              <i class="fa-solid fa-calculator text-rosegold-500 text-xs"></i> Payment Summary
-            </h3>
-
-            <div class="flex justify-between items-center text-xs text-stone-600 font-medium">
-              <span>Subtotal:</span>
-              <span id="formSubtotalDisplay" class="font-bold text-stone-800 font-mono">₹0</span>
-            </div>
-
-            <!-- Discount -->
-            <div class="flex items-center justify-between gap-2 text-xs">
-              <span class="text-stone-600 font-medium">Discount:</span>
-              <div class="flex items-center gap-1.5 w-36">
-                <input type="number" id="discountInput" value="1500" min="0" step="any" oninput="liveUpdate()" class="w-full text-right p-1.5 text-xs rounded-lg border border-stone-200 font-mono focus:border-rosegold-500 focus:outline-hidden">
-                <select id="discountType" onchange="liveUpdate()" class="p-1.5 text-xs rounded-lg border border-stone-200 bg-white">
-                  <option value="fixed" selected>₹</option>
-                  <option value="percent">%</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="flex justify-between items-center text-xs font-semibold text-stone-700 border-t border-stone-100 pt-2">
-              <span>Total Amount:</span>
-              <span id="formTotalAmountDisplay" class="font-bold font-mono text-stone-900 text-sm">₹0</span>
-            </div>
-
-            <!-- Advance Paid -->
-            <div class="flex items-center justify-between gap-2 text-xs">
-              <span class="text-stone-600 font-medium flex items-center gap-1">
-                <i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Advance Paid:
-              </span>
-              <div class="w-36">
-                <input type="number" id="advancePaidInput" value="15000" min="0" step="any" oninput="liveUpdate()" class="w-full text-right p-1.5 text-xs rounded-lg border border-emerald-200 bg-emerald-50/30 text-emerald-900 font-mono font-bold focus:border-emerald-500 focus:outline-hidden">
-              </div>
-            </div>
-
-            <!-- Balance Due -->
-            <div class="bg-rosegold-50/70 p-3 rounded-xl border border-rosegold-200 flex justify-between items-center">
-              <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-rosegold-800 block">Balance Due</span>
-                <span id="calculatedPaymentBadge" class="text-[10px] font-semibold text-rosegold-600">Advance Received</span>
-              </div>
-              <span id="formBalanceDueDisplay" class="text-base font-extrabold font-mono text-rosegold-700">₹0</span>
-            </div>
-          </div>
-
-          <!-- Bank & UPI Details -->
-          <div class="bg-white rounded-2xl p-5 border border-rosegold-200/80 luxury-shadow space-y-3">
-            <h3 class="font-serif font-bold text-sm text-stone-900 border-b border-stone-100 pb-2 flex items-center gap-1.5">
-              <i class="fa-solid fa-qrcode text-rosegold-500 text-xs"></i> Payment Details & UPI
-            </h3>
-
-            <div>
-              <label class="block text-[11px] font-semibold text-stone-600 mb-1">UPI ID (Scan & Pay)</label>
-              <input type="text" id="upiId" value="aurabridal@okhdfcbank" oninput="liveUpdate()" placeholder="e.g. artist@upi" class="w-full px-3 py-1.5 text-xs font-mono font-semibold text-stone-800 rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">Bank Name</label>
-                <input type="text" id="bankName" value="HDFC Bank" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-              <div>
-                <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">Account Name</label>
-                <input type="text" id="bankAccountName" value="Aura Bridal Hair Studio" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">Account Number</label>
-                <input type="text" id="bankAccountNumber" value="50200088991122" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 font-mono focus:border-rosegold-500 focus:outline-hidden">
-              </div>
-              <div>
-                <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">IFSC Code</label>
-                <input type="text" id="bankIfsc" value="HDFC0001234" oninput="liveUpdate()" class="w-full px-2 py-1.5 text-xs rounded-lg border border-stone-200 font-mono focus:border-rosegold-500 focus:outline-hidden uppercase">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Terms & Thank You Note -->
-        <div class="bg-white rounded-2xl p-5 border border-rosegold-200/80 luxury-shadow space-y-3">
-          <div class="flex items-center justify-between border-b border-stone-100 pb-2">
-            <h3 class="font-serif font-bold text-sm text-stone-900 flex items-center gap-1.5">
-              <i class="fa-solid fa-scroll text-rosegold-500 text-xs"></i> Terms & Conditions & Note
-            </h3>
-            <span class="text-[10px] text-stone-400 font-medium">Standard 6 Bridal Clauses</span>
-          </div>
-
-          <div>
-            <label class="block text-[11px] font-semibold text-stone-600 mb-1">Terms & Conditions (One per line)</label>
-            <textarea id="termsInput" rows="5" oninput="liveUpdate()" class="w-full p-2.5 text-xs rounded-xl border border-stone-200 focus:border-rosegold-500 focus:outline-hidden leading-relaxed font-sans">Booking is confirmed after receipt of the advance payment.
-Balance payment is due on or before the service date.
-Advance payment is non-refundable.
-Cancellation terms apply as agreed at the time of booking.
-Travel charges may apply depending on the location.
-Additional services requested on the event day will be charged separately.</textarea>
-          </div>
-
-          <div>
-            <label class="block text-[11px] font-semibold text-stone-600 mb-1">Thank You Note</label>
-            <input type="text" id="thankYouInput" value="Thank you for choosing us for your special day." oninput="liveUpdate()" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 focus:border-rosegold-500 focus:outline-hidden italic font-serif text-stone-800">
-          </div>
-        </div>
-
-      </section>
-
-      <!-- RIGHT COLUMN: Elegant A4 Printable Preview (6 Cols) -->
-      <section id="previewSection" class="lg:col-span-6 sticky top-24">
+      <!-- FORM COLUMN (Editor) -->
+      <section id="form-panel" class="no-print lg:col-span-5 space-y-4 bg-white p-4 sm:p-5 rounded-xl border border-stone-200 shadow-sm max-h-none lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
         
-        <div class="flex items-center justify-between mb-3 px-1">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span class="text-xs font-bold uppercase tracking-wider text-stone-500 font-serif">Live Luxury Document Preview</span>
+        <!-- Studio Details -->
+        <div class="border-b border-stone-100 pb-3">
+          <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
+            <i data-lucide="store" class="w-3.5 h-3.5"></i> Studio Profile
           </div>
-          <div class="flex items-center gap-2 text-xs">
-            <span class="text-stone-400 text-[11px]">Print Ready (A4)</span>
-            <button onclick="window.print()" class="text-rosegold-700 hover:text-rosegold-900 font-bold flex items-center gap-1 transition">
-              <i class="fa-solid fa-expand text-xs"></i> Full Print
-            </button>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="col-span-2">
+              <label class="block font-medium text-stone-600 mb-0.5">Brand / Stylist Name</label>
+              <input type="text" id="in_stylist" placeholder="e.g. Deepz Hairstylish" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded text-stone-800">
+            </div>
+            <div class="col-span-2">
+              <label class="block font-medium text-stone-600 mb-0.5">Tagline / Subheading</label>
+              <input type="text" id="in_tagline" placeholder="e.g. Bridal Hairstyling & Beauty Services" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Phone Number</label>
+              <input type="tel" inputmode="tel" id="in_studio_phone" placeholder="e.g. +91 98765 43210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Email</label>
+              <input type="email" id="in_studio_email" placeholder="e.g. hello@deepzstyling.com" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div class="col-span-2">
+              <label class="block font-medium text-stone-600 mb-0.5">City, State / Address</label>
+              <input type="text" id="in_studio_city" placeholder="e.g. Tiruppur, Tamil Nadu" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
           </div>
         </div>
 
-        <!-- The Luxury Bridal Invoice Sheet -->
-        <div id="printInvoiceDoc" class="bg-white rounded-3xl p-7 sm:p-10 border border-rosegold-200/90 luxury-shadow text-stone-800 relative overflow-hidden transition-all">
-          
-          <!-- Subtle Luxury Watermark / Ornamental Header Background -->
-          <div class="absolute -top-14 -right-14 w-48 h-48 bg-gradient-to-br from-rosegold-100/60 to-champagne-100/40 rounded-full blur-2xl pointer-events-none"></div>
-          <div class="absolute -bottom-16 -left-16 w-52 h-52 bg-gradient-to-tr from-champagne-100/50 to-rosegold-100/30 rounded-full blur-2xl pointer-events-none"></div>
-
-          <!-- Document Top Header -->
-          <div class="relative z-10 text-center pb-6 border-b border-rosegold-200/80">
-            <div class="inline-flex items-center justify-center gap-2 mb-2 text-rosegold-500">
-              <span class="w-8 h-[1px] bg-rosegold-300"></span>
-              <i class="fa-solid fa-gem text-xs"></i>
-              <span class="w-8 h-[1px] bg-rosegold-300"></span>
+        <!-- Invoice Meta -->
+        <div class="border-b border-stone-100 pb-3">
+          <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
+            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Invoice & Dates
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-xs">
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Invoice #</label>
+              <input type="text" id="in_inv_no" placeholder="INV-001" oninput="updateInvoice()" class="w-full px-2 py-1.5 border border-stone-200 rounded">
             </div>
-
-            <h1 id="docBrandName" class="font-serif font-bold text-2xl sm:text-3xl text-stone-900 tracking-tight leading-tight">
-              Aura Bridal Hair & Artistry
-            </h1>
-            
-            <p id="docBrandTagline" class="font-cormorant italic text-base sm:text-lg text-rosegold-700 font-medium tracking-wide mt-0.5">
-              Bridal Hairstyling & Beauty Services
-            </p>
-
-            <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-stone-500 mt-2 font-medium">
-              <span id="docBrandPhone" class="flex items-center gap-1"><i class="fa-solid fa-phone text-[9px] text-rosegold-400"></i> +91 98765 43210</span>
-              <span class="text-rosegold-300 hidden sm:inline">•</span>
-              <span id="docBrandEmail" class="flex items-center gap-1"><i class="fa-solid fa-envelope text-[9px] text-rosegold-400"></i> hello@aurabridalhair.com</span>
-              <span class="text-rosegold-300 hidden sm:inline">•</span>
-              <span id="docBrandLocation" class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-[9px] text-rosegold-400"></i> Mumbai, Maharashtra</span>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Invoice Date</label>
+              <input type="date" id="in_inv_date" oninput="updateInvoice()" class="w-full px-1.5 py-1.5 border border-stone-200 rounded text-[11px]">
             </div>
-
-            <!-- INVOICE Banner -->
-            <div class="mt-4 flex items-center justify-between pt-3 border-t border-dashed border-rosegold-200/60">
-              <span class="font-serif text-xs uppercase tracking-[0.25em] text-stone-400 font-bold">Tax & Booking Invoice</span>
-              <div id="docStatusBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rosegold-100 text-rosegold-800 border border-rosegold-200/80">
-                Advance Received
-              </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Service Date</label>
+              <input type="date" id="in_service_date" oninput="updateInvoice()" class="w-full px-1.5 py-1.5 border border-stone-200 rounded text-[11px]">
             </div>
           </div>
+        </div>
 
-          <!-- Invoice Details & Bill To Grid -->
-          <div class="relative z-10 grid grid-cols-2 gap-6 py-5 border-b border-rosegold-200/80 text-xs">
-            
-            <!-- Left: Bill To -->
-            <div class="space-y-1">
-              <span class="font-serif text-[10px] uppercase tracking-widest text-rosegold-700 font-bold block mb-1">
-                BILL TO (BRIDE)
-              </span>
-              <p id="docBrideName" class="font-serif font-bold text-stone-900 text-sm sm:text-base leading-snug">
-                Pooja Sharma
-              </p>
-              <p class="text-stone-600 font-medium text-[11px]">
-                <span class="text-stone-400">Phone:</span> <span id="docBridePhone">+91 98201 11223</span>
-              </p>
-              <p class="text-stone-600 font-medium text-[11px]">
-                <span class="text-stone-400">Email:</span> <span id="docBrideEmail">pooja.sharma@gmail.com</span>
-              </p>
-              <div class="mt-1 pt-1 text-[11px] text-stone-600 leading-tight">
-                <p><span class="text-stone-400">Event Venue:</span> <span id="docEventVenue" class="font-semibold text-stone-800">The Grand Heritage Ballroom</span></p>
-                <p><span class="text-stone-400">Location:</span> <span id="docEventLocation">Udaipur, Rajasthan</span></p>
-              </div>
-            </div>
-
-            <!-- Right: Invoice Metadata -->
-            <div class="text-right space-y-1.5">
-              <span class="font-serif text-[10px] uppercase tracking-widest text-rosegold-700 font-bold block mb-1">
-                INVOICE DETAILS
-              </span>
-              <div>
-                <span class="text-stone-400 text-[11px]">Invoice No.:</span>
-                <span id="docInvoiceNo" class="font-mono font-bold text-stone-900 text-xs sm:text-sm ml-1">#INV-001</span>
-              </div>
-              <div>
-                <span class="text-stone-400 text-[11px]">Invoice Date:</span>
-                <span id="docInvoiceDate" class="font-medium text-stone-700 ml-1">22/09/2026</span>
-              </div>
-              <div class="bg-rosegold-50/90 border border-rosegold-200/80 p-2 rounded-xl inline-block text-right mt-1">
-                <span class="text-rosegold-800 text-[10px] uppercase font-bold tracking-wider block">Service / Wedding Date</span>
-                <span id="docServiceDate" class="font-serif font-bold text-stone-900 text-xs sm:text-sm">18/10/2026</span>
-              </div>
-            </div>
-
+        <!-- Bill To / Bride Details -->
+        <div class="border-b border-stone-100 pb-3">
+          <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
+            <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Bride / Client Details
           </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="col-span-2">
+              <label class="block font-medium text-stone-600 mb-0.5">Bride Name</label>
+              <input type="text" id="in_bride_name" placeholder="Enter bride's name" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded font-medium">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Phone (for WhatsApp)</label>
+              <input type="tel" inputmode="tel" id="in_bride_phone" placeholder="e.g. 9820111223" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Email</label>
+              <input type="email" id="in_bride_email" placeholder="e.g. bride@gmail.com" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Event Venue</label>
+              <input type="text" id="in_venue" placeholder="e.g. Grand Palace Hall" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Event Location</label>
+              <input type="text" id="in_location" placeholder="e.g. Coimbatore, Tamil Nadu" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+          </div>
+        </div>
 
-          <!-- Services Table -->
-          <div class="relative z-10 py-5">
-            <span class="font-serif text-[10px] uppercase tracking-widest text-rosegold-700 font-bold block mb-2.5">
-              SERVICES CONTRACTED
+        <!-- Services & Rates -->
+        <div class="border-b border-stone-100 pb-3">
+          <div class="flex items-center justify-between mb-2">
+            <span class="flex items-center gap-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
+              <i data-lucide="scissors" class="w-3.5 h-3.5"></i> Services
             </span>
-            <table class="w-full text-left text-xs">
-              <thead>
-                <tr class="border-b-2 border-rosegold-200 text-stone-500 font-serif font-bold text-[10px] uppercase tracking-wider">
-                  <th class="pb-2 w-6/12">Service Description</th>
-                  <th class="pb-2 w-2/12 text-center">Qty</th>
-                  <th class="pb-2 w-2/12 text-right">Rate</th>
-                  <th class="pb-2 w-2/12 text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody id="docServicesTableBody" class="divide-y divide-rosegold-100 font-sans text-xs">
-                <!-- Dynamically Rendered -->
-              </tbody>
-            </table>
+            <button onclick="addServiceRow()" class="text-xs text-gold-600 hover:text-gold-700 font-semibold flex items-center gap-1 active:scale-95">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line
+            </button>
           </div>
-
-          <!-- Payment Summary & UPI Section -->
-          <div class="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-5 pt-4 border-t border-rosegold-200/80">
-            
-            <!-- Left: UPI QR Code & Bank Information (7 Cols) -->
-            <div class="sm:col-span-7 bg-[#fdfbf9] p-3.5 sm:p-4 rounded-2xl border border-rosegold-200/80 space-y-2">
-              <span class="font-serif text-[10px] uppercase tracking-widest text-rosegold-800 font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-credit-card text-[9px]"></i> PAYMENT DETAILS
-              </span>
-              
-              <div class="flex items-start gap-3 pt-1">
-                <!-- Live QR Code -->
-                <div class="bg-white p-1.5 rounded-xl border border-rosegold-200 shadow-2xs shrink-0 text-center">
-                  <img id="docUpiQrCode" src="" alt="Scan to pay" class="w-20 h-20 rounded object-contain mx-auto" onerror="this.src='https://placehold.co/100x100/f3e3dd/7a4639?text=Scan+UPI'">
-                  <span class="text-[8px] font-bold text-stone-500 uppercase tracking-tighter block mt-0.5">Scan with GPay/PhonePe</span>
-                </div>
-
-                <!-- Bank Info Text -->
-                <div class="text-[11px] text-stone-700 leading-snug space-y-0.5 flex-1">
-                  <p><span class="text-stone-400 font-semibold">UPI ID:</span> <span id="docUpiId" class="font-mono font-bold text-rosegold-900">aurabridal@okhdfcbank</span></p>
-                  <p><span class="text-stone-400 font-semibold">Bank:</span> <span id="docBankName">HDFC Bank</span></p>
-                  <p><span class="text-stone-400 font-semibold">A/C Name:</span> <span id="docAccountName">Aura Bridal Hair Studio</span></p>
-                  <p><span class="text-stone-400 font-semibold">A/C No.:</span> <span id="docAccountNumber" class="font-mono font-semibold">50200088991122</span></p>
-                  <p><span class="text-stone-400 font-semibold">IFSC:</span> <span id="docIfsc" class="font-mono font-semibold">HDFC0001234</span></p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right: Subtotal, Discount, Advance, Balance Due (5 Cols) -->
-            <div class="sm:col-span-5 flex flex-col justify-between space-y-2 text-xs">
-              <div class="space-y-1.5">
-                <div class="flex justify-between text-stone-600">
-                  <span class="text-[11px]">Subtotal:</span>
-                  <span id="docSubtotal" class="font-mono font-medium">₹0</span>
-                </div>
-                <div id="docDiscountRow" class="flex justify-between text-emerald-700">
-                  <span class="text-[11px]">Discount:</span>
-                  <span id="docDiscount" class="font-mono font-medium">-₹0</span>
-                </div>
-                <div class="flex justify-between text-stone-900 font-semibold border-t border-stone-200/80 pt-1">
-                  <span>Total Amount:</span>
-                  <span id="docTotalAmount" class="font-mono font-bold text-stone-900">₹0</span>
-                </div>
-                <div class="flex justify-between text-emerald-800">
-                  <span class="text-[11px]">Advance Paid:</span>
-                  <span id="docAdvancePaid" class="font-mono font-semibold text-emerald-700">-₹0</span>
-                </div>
-              </div>
-
-              <!-- Grand Balance Due -->
-              <div class="bg-gradient-to-r from-rosegold-50 to-champagne-50 border border-rosegold-300 p-2.5 rounded-xl flex justify-between items-center text-stone-900">
-                <div>
-                  <span class="font-serif text-[10px] uppercase font-bold tracking-wider text-rosegold-800 block">Balance Due</span>
-                  <span class="text-[9px] text-stone-400">Due on/before event</span>
-                </div>
-                <span id="docBalanceDue" class="font-mono text-base font-extrabold text-rosegold-800">₹0</span>
-              </div>
-            </div>
-
+          <div id="service_input_rows" class="space-y-2">
+            <!-- Dynamic rows inserted by JS -->
           </div>
+        </div>
 
-          <!-- Terms & Conditions Section -->
-          <div class="relative z-10 mt-6 pt-4 border-t border-rosegold-200/80 text-[10px] text-stone-600 space-y-2">
+        <!-- Payment Calculations -->
+        <div class="border-b border-stone-100 pb-3">
+          <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
+            <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Discount & Advance
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <span class="font-serif uppercase tracking-widest text-rosegold-800 font-bold block mb-1">
-                TERMS & CONDITIONS
-              </span>
-              <ol id="docTermsList" class="list-decimal list-inside space-y-0.5 text-stone-600 leading-relaxed font-sans">
-                <!-- Injected via JavaScript -->
-              </ol>
+              <label class="block font-medium text-stone-600 mb-0.5">Discount (₹)</label>
+              <input type="number" inputmode="numeric" id="in_discount" placeholder="0" min="0" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
-
-            <!-- Thank You Signature -->
-            <div class="pt-3 text-center border-t border-dashed border-rosegold-200/80 space-y-1">
-              <p id="docThankYouNote" class="font-cormorant italic text-base sm:text-lg text-stone-800 font-semibold">
-                Thank you for choosing us for your special day.
-              </p>
-              <p class="text-[10px] text-stone-500 font-medium flex items-center justify-center gap-2">
-                <span id="docInstagramHandle" class="text-rosegold-700 font-semibold">@aurabridalhair</span>
-                <span class="text-stone-300">•</span>
-                <span id="docFooterPhone">+91 98765 43210</span>
-              </p>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Advance Paid (₹)</label>
+              <input type="number" inputmode="numeric" id="in_advance" placeholder="0" min="0" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
           </div>
+        </div>
 
+        <!-- Bank & UPI Information -->
+        <div class="border-b border-stone-100 pb-3">
+          <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
+            <i data-lucide="credit-card" class="w-3.5 h-3.5"></i> Payment & UPI Details
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="col-span-2">
+              <label class="block font-medium text-stone-600 mb-0.5">UPI ID (Creates Dynamic QR)</label>
+              <input type="text" id="in_upi" placeholder="e.g. name@okhdfcbank" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Bank Name</label>
+              <input type="text" id="in_bank" placeholder="e.g. HDFC Bank" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Account Name</label>
+              <input type="text" id="in_acc_name" placeholder="e.g. Deepz Hair Artistry" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Account Number</label>
+              <input type="text" inputmode="numeric" id="in_acc_no" placeholder="e.g. 50100012345678" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">IFSC Code</label>
+              <input type="text" id="in_ifsc" placeholder="e.g. HDFC0001234" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded uppercase">
+            </div>
+          </div>
+        </div>
+
+        <!-- Social / Footer -->
+        <div>
+          <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
+            <i data-lucide="instagram" class="w-3.5 h-3.5"></i> Social & Contact Footer
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Instagram Handle</label>
+              <input type="text" id="in_insta" placeholder="e.g. @deepzhairstylish" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+            <div>
+              <label class="block font-medium text-stone-600 mb-0.5">Footer Phone</label>
+              <input type="tel" inputmode="tel" id="in_footer_phone" placeholder="e.g. +91 98765 43210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+            </div>
+          </div>
         </div>
 
       </section>
 
-    </div>
-
-    <!-- TAB 2: SAVED INVOICES & BOOKINGS ARCHIVE -->
-    <div id="tabViewHistory" class="hidden">
-      <div class="bg-white rounded-3xl border border-rosegold-200/90 luxury-shadow p-6 sm:p-8 space-y-6">
-        
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-5">
+      <!-- PREVIEW COLUMN (1-Page Print View) -->
+      <section id="preview-panel" class="hidden lg:flex lg:col-span-7 justify-center overflow-x-auto">
+        <div id="invoice-doc" class="invoice-container bg-white border border-stone-200 shadow-xl rounded-lg w-full max-w-[210mm] min-h-[285mm] p-6 sm:p-8 text-stone-900 flex flex-col justify-between">
+          
           <div>
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-rosegold-500"></span>
-              <h2 class="font-serif font-bold text-xl text-stone-900">Bride Invoices & Bookings</h2>
+            <!-- HEADER -->
+            <div class="border-b-2 border-gold-300 pb-3 flex justify-between items-start gap-3">
+              <div>
+                <h1 id="out_stylist" class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-900 leading-tight">Deepz Hairstylish</h1>
+                <p id="out_tagline" class="font-display text-xs sm:text-sm italic text-gold-700 tracking-wide">Bridal Hairstyling & Beauty Services</p>
+                <div class="flex flex-wrap items-center gap-x-1.5 text-[10px] sm:text-[11px] text-stone-500 mt-1">
+                  <span id="out_studio_phone">+91 98765 43210</span>
+                  <span>•</span>
+                  <span id="out_studio_email">hello@deepzstyling.com</span>
+                  <span>•</span>
+                  <span id="out_studio_city">Tiruppur, Tamil Nadu</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="inline-block px-2 py-0.5 text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold bg-gold-100 text-gold-800 rounded">
+                  TAX & BOOKING INVOICE
+                </span>
+                <div class="text-[10px] sm:text-[11px] text-stone-600 mt-1 space-y-0.5">
+                  <p><span class="font-semibold text-stone-800">Invoice No.:</span> <span id="out_inv_no">-</span></p>
+                  <p><span class="font-semibold text-stone-800">Date:</span> <span id="out_inv_date">-</span></p>
+                  <p><span class="font-semibold text-stone-800">Service:</span> <span id="out_service_date" class="text-gold-800 font-bold">-</span></p>
+                </div>
+              </div>
             </div>
-            <p class="text-xs text-stone-500 mt-0.5">Manage, search, reload, and re-export past bridal invoices stored in your local studio database.</p>
-          </div>
 
-          <div class="flex items-center gap-3">
-            <div class="relative">
-              <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-xs"></i>
-              <input type="text" id="bookingSearchInput" oninput="renderHistoryList()" placeholder="Search bride name, invoice #..." class="pl-8 pr-3 py-1.5 text-xs rounded-xl border border-stone-200 focus:border-rosegold-500 focus:outline-hidden w-60">
+            <!-- CLIENT / BILL TO -->
+            <div class="mt-3 bg-stone-50 border border-stone-200/80 rounded p-2.5 sm:p-3 grid grid-cols-2 gap-2 text-[10.5px] sm:text-[11px]">
+              <div>
+                <p class="text-[9px] uppercase tracking-wider font-bold text-gold-800">BILL TO (BRIDE)</p>
+                <p id="out_bride_name" class="font-semibold text-stone-900 text-xs mt-0.5">-</p>
+                <p class="text-stone-600">Phone: <span id="out_bride_phone" class="text-stone-800">-</span></p>
+                <p class="text-stone-600">Email: <span id="out_bride_email" class="text-stone-800">-</span></p>
+              </div>
+              <div>
+                <p class="text-[9px] uppercase tracking-wider font-bold text-gold-800">EVENT DETAILS</p>
+                <p class="text-stone-600 mt-0.5">Venue: <span id="out_venue" class="font-medium text-stone-800">-</span></p>
+                <p class="text-stone-600">Location: <span id="out_location" class="font-medium text-stone-800">-</span></p>
+              </div>
             </div>
-            <button onclick="clearAllBookings()" class="px-3 py-1.5 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition">
-              Clear All
-            </button>
+
+            <!-- SERVICES TABLE -->
+            <div class="mt-3 overflow-x-auto">
+              <table class="w-full text-left text-[10.5px] sm:text-[11px] border-collapse min-w-[320px]">
+                <thead>
+                  <tr class="border-b border-stone-300 text-[9.5px] sm:text-[10px] tracking-wider uppercase font-semibold text-stone-500 bg-stone-50">
+                    <th class="py-1 px-2 font-medium">Service Description</th>
+                    <th class="py-1 px-2 text-center font-medium w-10">Qty</th>
+                    <th class="py-1 px-2 text-right font-medium w-20">Rate</th>
+                    <th class="py-1 px-2 text-right font-medium w-20">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="invoice_services_table" class="divide-y divide-stone-100 text-stone-800">
+                  <!-- Dynamic Service Rows inserted by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PAYMENT TOTALS & ADVANCE -->
+            <div class="mt-2.5 flex justify-end">
+              <div class="w-60 sm:w-64 space-y-1 text-[10.5px] sm:text-[11px] bg-stone-50 p-2.5 rounded border border-stone-200">
+                <div class="flex justify-between text-stone-600">
+                  <span>Subtotal:</span>
+                  <span id="out_subtotal" class="font-semibold text-stone-900">₹0</span>
+                </div>
+                <div id="row_discount" class="flex justify-between text-emerald-700 hidden">
+                  <span>Discount:</span>
+                  <span id="out_discount">- ₹0</span>
+                </div>
+                <div class="flex justify-between text-stone-900 border-t border-stone-200 pt-1 font-semibold">
+                  <span>Total Amount:</span>
+                  <span id="out_total">₹0</span>
+                </div>
+                <div class="flex justify-between text-stone-600">
+                  <span>Advance Paid:</span>
+                  <span id="out_advance" class="font-semibold text-stone-900">- ₹0</span>
+                </div>
+                <div class="flex justify-between text-stone-900 border-t-2 border-stone-900 pt-1 font-bold text-xs bg-gold-100/60 p-1.5 rounded">
+                  <span class="text-gold-900">Balance Due:</span>
+                  <span id="out_balance" class="text-gold-900">₹0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAYMENT DETAILS & UPI QR -->
+            <div class="mt-3 border border-stone-200 rounded p-2.5 flex justify-between items-center bg-white page-break-avoid">
+              <div class="text-[9.5px] sm:text-[10px] space-y-0.5 text-stone-700 max-w-[65%]">
+                <p class="text-[8.5px] uppercase tracking-wider font-bold text-gold-800 mb-0.5">PAYMENT DETAILS</p>
+                <p><span class="font-semibold text-stone-900">UPI ID:</span> <span id="out_upi">-</span></p>
+                <p><span class="font-semibold text-stone-900">Bank:</span> <span id="out_bank">-</span></p>
+                <p><span class="font-semibold text-stone-900">A/C Name:</span> <span id="out_acc_name">-</span></p>
+                <p><span class="font-semibold text-stone-900">A/C No:</span> <span id="out_acc_no">-</span></p>
+                <p><span class="font-semibold text-stone-900">IFSC:</span> <span id="out_ifsc">-</span></p>
+              </div>
+              <div class="flex flex-col items-center justify-center p-1 bg-stone-50 border border-stone-200 rounded">
+                <div id="qrcode" class="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center"></div>
+                <span class="text-[7.5px] sm:text-[8px] font-bold tracking-tight uppercase text-stone-500 mt-1">UPI Scan</span>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <!-- History Table -->
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-stone-50 text-stone-500 font-serif font-bold uppercase tracking-wider text-[10px] border-b border-stone-200">
-              <tr>
-                <th class="py-3 px-4">Invoice #</th>
-                <th class="py-3 px-4">Bride Name</th>
-                <th class="py-3 px-4">Event Date</th>
-                <th class="py-3 px-4">Total Amount</th>
-                <th class="py-3 px-4">Balance Due</th>
-                <th class="py-3 px-4">Status</th>
-                <th class="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="historyTableBody" class="divide-y divide-stone-100 font-sans font-medium text-stone-700">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
-        </div>
-
-        <div id="emptyBookingsState" class="py-14 text-center">
-          <div class="w-14 h-14 bg-rosegold-50 text-rosegold-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
-            <i class="fa-regular fa-folder-open"></i>
+          <!-- FOOTER: TERMS & CONDITIONS -->
+          <div class="mt-3 border-t border-stone-200 pt-2 text-[8.5px] sm:text-[9px] text-stone-500 leading-tight page-break-avoid">
+            <p class="font-bold text-stone-800 uppercase tracking-wider text-[8.5px] mb-1">TERMS & CONDITIONS</p>
+            <ol class="list-decimal pl-3 space-y-0.5">
+              <li>Booking is confirmed after receipt of the advance payment.</li>
+              <li>Balance payment is due on or before the service date.</li>
+              <li>Advance payment is non-refundable.</li>
+              <li>Cancellation terms apply as agreed at the time of booking.</li>
+              <li>Travel charges may apply depending on the location.</li>
+              <li>Additional services requested on the event day will be charged separately.</li>
+            </ol>
+            
+            <div class="mt-2 pt-1 border-t border-stone-200 flex justify-between items-center text-[9px] sm:text-[10px] font-medium text-stone-700">
+              <span class="font-serif italic text-gold-800">Thank you for choosing us for your special day.</span>
+              <div class="flex items-center gap-2">
+                <span id="out_insta"></span>
+                <span>•</span>
+                <span id="out_footer_phone"></span>
+              </div>
+            </div>
           </div>
-          <h4 class="font-serif font-bold text-stone-800 text-sm">No Saved Bookings Yet</h4>
-          <p class="text-xs text-stone-400 mt-1 max-w-sm mx-auto">Create and click "Save" in the invoice builder to archive your bridal clients here.</p>
-          <button onclick="switchMainTab('editor')" class="mt-4 px-4 py-2 bg-stone-900 text-white rounded-xl text-xs font-semibold hover:bg-stone-800 transition">
-            Go to Invoice Builder
-          </button>
-        </div>
 
-      </div>
+        </div>
+      </section>
+
     </div>
-
   </main>
 
   <script>
-    // Initial bridal services template data matching user request
-    const DEFAULT_SERVICES = [
-      { id: 1, desc: "Bridal Hairstyling", qty: 1, rate: 22000 },
-      { id: 2, desc: "Hair Trial", qty: 1, rate: 4500 },
-      { id: 3, desc: "Bridesmaid Hairstyling", qty: 2, rate: 3500 },
-      { id: 4, desc: "Family Hairstyling", qty: 3, rate: 2500 },
-      { id: 5, desc: "Travel Charges", qty: 1, rate: 6000 },
-      { id: 6, desc: "Additional Services (Touch-up / Floral Styling)", qty: 1, rate: 3000 }
+    let services = [
+      { desc: "Bridal Hairstyling", qty: "", rate: "" },
+      { desc: "Hair Trial", qty: "", rate: "" },
+      { desc: "Bridesmaid Hairstyling", qty: "", rate: "" },
+      { desc: "Family Hairstyling", qty: "", rate: "" },
+      { desc: "Travel Charges", qty: "", rate: "" },
+      { desc: "Additional Services", qty: "", rate: "" }
     ];
 
-    let currentServices = JSON.parse(JSON.stringify(DEFAULT_SERVICES));
-    let activeBookingId = null;
+    let qrcodeInstance = null;
 
-    // Run on startup
-    window.addEventListener('DOMContentLoaded', () => {
-      // Set today's date and a wedding date 3 weeks from now
-      const today = new Date();
-      const weddingDate = new Date(today);
-      weddingDate.setDate(today.getDate() + 26);
+    // Mobile Segment Switching
+    function switchMobileTab(tab) {
+      const formPanel = document.getElementById("form-panel");
+      const previewPanel = document.getElementById("preview-panel");
+      const btnForm = document.getElementById("tab-btn-form");
+      const btnPreview = document.getElementById("tab-btn-preview");
 
-      document.getElementById('invoiceDate').value = today.toISOString().split('T')[0];
-      document.getElementById('serviceDate').value = weddingDate.toISOString().split('T')[0];
-
-      renderServicesFormTable();
-      liveUpdate();
-      updateSavedBookingsBadge();
-    });
-
-    // Tab Switching
-    function switchMainTab(tab) {
-      const editorView = document.getElementById('tabViewEditor');
-      const historyView = document.getElementById('tabViewHistory');
-      const navEditorBtn = document.getElementById('navEditorBtn');
-      const navHistoryBtn = document.getElementById('navHistoryBtn');
-
-      if (tab === 'editor') {
-        editorView.classList.remove('hidden');
-        historyView.classList.add('hidden');
-        navEditorBtn.className = "px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 bg-white text-stone-900 shadow-xs";
-        navHistoryBtn.className = "px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-stone-600 hover:text-stone-900 transition-all flex items-center gap-2";
+      if (tab === "form") {
+        formPanel.classList.remove("hidden");
+        previewPanel.classList.add("hidden");
+        btnForm.className = "px-4 py-1.5 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5";
+        btnPreview.className = "px-4 py-1.5 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5";
       } else {
-        editorView.classList.add('hidden');
-        historyView.classList.remove('hidden');
-        navHistoryBtn.className = "px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 bg-white text-stone-900 shadow-xs";
-        navEditorBtn.className = "px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-stone-600 hover:text-stone-900 transition-all flex items-center gap-2";
-        renderHistoryList();
+        formPanel.classList.add("hidden");
+        previewPanel.classList.remove("hidden");
+        btnPreview.className = "px-4 py-1.5 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5";
+        btnForm.className = "px-4 py-1.5 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5";
       }
     }
 
-    // Toast Notification helper
-    function showToast(message, isError = false) {
-      const toast = document.getElementById('notificationToast');
-      const msg = document.getElementById('toastMsg');
-      const icon = document.getElementById('toastIcon');
-
-      msg.innerText = message;
-      if (isError) {
-        icon.className = "fa-solid fa-circle-exclamation text-rose-400";
-      } else {
-        icon.className = "fa-solid fa-circle-check text-rosegold-400";
-      }
-
-      toast.classList.remove('translate-y-24', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
-
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-24', 'opacity-0');
-      }, 2600);
-    }
-
-    // Format currency
-    function formatCurrency(num) {
-      const symbol = document.getElementById('currencySymbol').value || '₹';
-      const val = Number(num) || 0;
-      return `${symbol}${val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
-    }
-
-    // Render the interactive services table in form
-    function renderServicesFormTable() {
-      const tbody = document.getElementById('servicesFormTableBody');
-      tbody.innerHTML = '';
-
-      currentServices.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-rosegold-50/40 transition-colors";
-        
-        const lineTotal = (Number(item.qty) || 0) * (Number(item.rate) || 0);
-
-        tr.innerHTML = `
-          <td class="py-2 px-1">
-            <input type="text" value="${escapeHtml(item.desc)}" oninput="updateServiceItem(${item.id}, 'desc', this.value)" placeholder="Service description" class="w-full font-medium text-stone-800 bg-transparent border-b border-transparent hover:border-stone-300 focus:border-rosegold-500 focus:outline-hidden py-0.5 text-xs">
-          </td>
-          <td class="py-2 px-1 text-center">
-            <input type="number" min="1" step="1" value="${item.qty}" oninput="updateServiceItem(${item.id}, 'qty', this.value)" class="w-14 text-center rounded-lg border border-stone-200 py-1 font-mono text-xs focus:border-rosegold-500 focus:outline-hidden">
-          </td>
-          <td class="py-2 px-1 text-right">
-            <input type="number" min="0" step="100" value="${item.rate}" oninput="updateServiceItem(${item.id}, 'rate', this.value)" class="w-20 text-right rounded-lg border border-stone-200 py-1 pr-1.5 font-mono text-xs focus:border-rosegold-500 focus:outline-hidden">
-          </td>
-          <td class="py-2 px-1 text-right font-mono font-bold text-stone-800">
-            ${formatCurrency(lineTotal)}
-          </td>
-          <td class="py-2 px-1 text-center">
-            <button onclick="removeServiceItem(${item.id})" class="text-stone-400 hover:text-rose-500 transition p-1" title="Delete Line">
-              <i class="fa-regular fa-trash-can text-xs"></i>
-            </button>
-          </td>
+    function renderServiceInputs() {
+      const container = document.getElementById("service_input_rows");
+      container.innerHTML = "";
+      services.forEach((s, idx) => {
+        const row = document.createElement("div");
+        row.className = "flex items-center gap-1.5";
+        row.innerHTML = `
+          <input type="text" value="${s.desc}" oninput="services[${idx}].desc=this.value; updateInvoice();" class="flex-grow px-2 py-1 text-xs border border-stone-200 rounded" placeholder="Service">
+          <input type="number" inputmode="numeric" value="${s.qty}" oninput="services[${idx}].qty=this.value; updateInvoice();" class="w-11 px-1 py-1 text-xs border border-stone-200 rounded text-center" placeholder="Qty">
+          <input type="number" inputmode="numeric" value="${s.rate}" oninput="services[${idx}].rate=this.value; updateInvoice();" class="w-16 sm:w-20 px-1.5 py-1 text-xs border border-stone-200 rounded text-right" placeholder="₹ Rate">
+          <button onclick="removeServiceRow(${idx})" class="p-1 text-stone-400 hover:text-red-500 rounded active:scale-95"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
         `;
-        tbody.appendChild(tr);
+        container.appendChild(row);
       });
-
-      liveUpdate();
+      lucide.createIcons();
     }
 
-    function addNewBlankServiceRow(desc = "Additional Bridal Styling", qty = 1, rate = 2000) {
-      currentServices.push({
-        id: Date.now() + Math.random(),
-        desc,
-        qty: Number(qty) || 1,
-        rate: Number(rate) || 0
-      });
-      renderServicesFormTable();
+    function addServiceRow() {
+      services.push({ desc: "", qty: "", rate: "" });
+      renderServiceInputs();
+      updateInvoice();
     }
 
-    function addSelectedPresetService() {
-      const select = document.getElementById('presetServiceSelect');
-      const val = select.value;
-      if (!val) return;
-
-      const [desc, qty, rate] = val.split('|');
-      addNewBlankServiceRow(desc, Number(qty), Number(rate));
-      select.value = "";
-      showToast(`Added "${desc}"`);
-    }
-
-    function removeServiceItem(id) {
-      if (currentServices.length <= 1) {
-        showToast("Invoice must contain at least 1 service item.", true);
-        return;
+    function removeServiceRow(idx) {
+      if (services.length > 1) {
+        services.splice(idx, 1);
+        renderServiceInputs();
+        updateInvoice();
       }
-      currentServices = currentServices.filter(item => item.id !== id);
-      renderServicesFormTable();
     }
 
-    function updateServiceItem(id, field, value) {
-      const item = currentServices.find(i => i.id === id);
-      if (!item) return;
-
-      if (field === 'qty' || field === 'rate') {
-        item[field] = parseFloat(value) || 0;
-      } else {
-        item[field] = value;
-      }
-      liveUpdate();
+    function formatCurrency(val) {
+      return "₹" + Number(val || 0).toLocaleString("en-IN");
     }
 
-    function liveUpdate() {
-      // 1. Calculate financials
+    function updateInvoice() {
+      const stylist = document.getElementById("in_stylist").value.trim();
+      const tagline = document.getElementById("in_tagline").value.trim();
+      const sPhone = document.getElementById("in_studio_phone").value.trim();
+      const sEmail = document.getElementById("in_studio_email").value.trim();
+      const sCity = document.getElementById("in_studio_city").value.trim();
+
+      document.getElementById("out_stylist").innerText = stylist || "Deepz Hairstylish";
+      document.getElementById("out_tagline").innerText = tagline || "Bridal Hairstyling & Beauty Services";
+      document.getElementById("out_studio_phone").innerText = sPhone || "-";
+      document.getElementById("out_studio_email").innerText = sEmail || "-";
+      document.getElementById("out_studio_city").innerText = sCity || "-";
+
+      document.getElementById("out_inv_no").innerText = document.getElementById("in_inv_no").value.trim() || "-";
+      document.getElementById("out_inv_date").innerText = document.getElementById("in_inv_date").value || "-";
+      document.getElementById("out_service_date").innerText = document.getElementById("in_service_date").value || "-";
+
+      document.getElementById("out_bride_name").innerText = document.getElementById("in_bride_name").value.trim() || "-";
+      document.getElementById("out_bride_phone").innerText = document.getElementById("in_bride_phone").value.trim() || "-";
+      document.getElementById("out_bride_email").innerText = document.getElementById("in_bride_email").value.trim() || "-";
+      document.getElementById("out_venue").innerText = document.getElementById("in_venue").value.trim() || "-";
+      document.getElementById("out_location").innerText = document.getElementById("in_location").value.trim() || "-";
+
+      const tableBody = document.getElementById("invoice_services_table");
+      tableBody.innerHTML = "";
       let subtotal = 0;
-      currentServices.forEach(s => {
-        subtotal += (Number(s.qty) || 0) * (Number(s.rate) || 0);
-      });
 
-      const discountInput = parseFloat(document.getElementById('discountInput').value) || 0;
-      const discountType = document.getElementById('discountType').value;
-      let discountAmount = 0;
+      services.forEach(s => {
+        const q = Number(s.qty) || 0;
+        const r = Number(s.rate) || 0;
+        const amt = q * r;
+        subtotal += amt;
 
-      if (discountType === 'percent') {
-        discountAmount = subtotal * (Math.min(discountInput, 100) / 100);
-      } else {
-        discountAmount = Math.min(discountInput, subtotal);
-      }
-
-      const totalAmount = Math.max(0, subtotal - discountAmount);
-      const advancePaid = parseFloat(document.getElementById('advancePaidInput').value) || 0;
-      const balanceDue = Math.max(0, totalAmount - advancePaid);
-
-      // Auto Status Resolution
-      const statusSelect = document.getElementById('invoiceStatus');
-      if (balanceDue === 0 && totalAmount > 0) {
-        statusSelect.value = "Fully Settled";
-      } else if (advancePaid > 0 && balanceDue > 0) {
-        statusSelect.value = "Advance Received";
-      } else if (advancePaid === 0 && totalAmount > 0) {
-        statusSelect.value = "Payment Pending";
-      }
-
-      const status = statusSelect.value;
-      document.getElementById('calculatedPaymentBadge').innerText = status;
-
-      // Update Form Displays
-      document.getElementById('formSubtotalDisplay').innerText = formatCurrency(subtotal);
-      document.getElementById('formTotalAmountDisplay').innerText = formatCurrency(totalAmount);
-      document.getElementById('formBalanceDueDisplay').innerText = formatCurrency(balanceDue);
-
-      // 2. Sync to Document Preview
-      // Brand Info
-      document.getElementById('docBrandName').innerText = document.getElementById('brandName').value || 'Bridal Artistry';
-      document.getElementById('docBrandTagline').innerText = document.getElementById('brandTagline').value || 'Bridal Hairstyling & Beauty Services';
-      document.getElementById('docBrandPhone').innerHTML = `<i class="fa-solid fa-phone text-[9px] text-rosegold-400"></i> ${escapeHtml(document.getElementById('brandPhone').value)}`;
-      document.getElementById('docBrandEmail').innerHTML = `<i class="fa-solid fa-envelope text-[9px] text-rosegold-400"></i> ${escapeHtml(document.getElementById('brandEmail').value)}`;
-      document.getElementById('docBrandLocation').innerHTML = `<i class="fa-solid fa-location-dot text-[9px] text-rosegold-400"></i> ${escapeHtml(document.getElementById('brandLocation').value)}`;
-      document.getElementById('docFooterPhone').innerText = document.getElementById('brandPhone').value;
-      document.getElementById('docInstagramHandle').innerText = '@' + document.getElementById('brandInstagram').value.replace('@', '');
-
-      // Bill To (Bride)
-      document.getElementById('docBrideName').innerText = document.getElementById('brideName').value || 'Bride Name';
-      document.getElementById('docBridePhone').innerText = document.getElementById('bridePhone').value || '-';
-      document.getElementById('docBrideEmail').innerText = document.getElementById('brideEmail').value || '-';
-      document.getElementById('docEventVenue').innerText = document.getElementById('eventVenue').value || '-';
-      document.getElementById('docEventLocation').innerText = document.getElementById('eventLocation').value || '-';
-
-      // Invoice Details
-      document.getElementById('docInvoiceNo').innerText = '#' + (document.getElementById('invoiceNumber').value || 'INV-001');
-      document.getElementById('docInvoiceDate').innerText = formatDateStr(document.getElementById('invoiceDate').value);
-      document.getElementById('docServiceDate').innerText = formatDateStr(document.getElementById('serviceDate').value);
-
-      // Status Badge Styling on Document
-      const docBadge = document.getElementById('docStatusBadge');
-      docBadge.innerText = status;
-      if (status === 'Fully Settled') {
-        docBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200";
-      } else if (status === 'Advance Received') {
-        docBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rosegold-100 text-rosegold-800 border border-rosegold-200";
-      } else if (status === 'Payment Pending') {
-        docBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200";
-      } else {
-        docBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-stone-100 text-stone-700 border border-stone-200";
-      }
-
-      // Services on Document
-      const docTableBody = document.getElementById('docServicesTableBody');
-      docTableBody.innerHTML = '';
-      currentServices.forEach(s => {
-        const tr = document.createElement('tr');
-        const lineVal = (Number(s.qty) || 0) * (Number(s.rate) || 0);
-        tr.innerHTML = `
-          <td class="py-2.5 pr-2 font-medium text-stone-800">${escapeHtml(s.desc)}</td>
-          <td class="py-2.5 px-2 text-center text-stone-600 font-mono">${s.qty}</td>
-          <td class="py-2.5 px-2 text-right text-stone-600 font-mono">${formatCurrency(s.rate)}</td>
-          <td class="py-2.5 pl-2 text-right font-bold text-stone-900 font-mono">${formatCurrency(lineVal)}</td>
-        `;
-        docTableBody.appendChild(tr);
-      });
-
-      // Document Financials
-      document.getElementById('docSubtotal').innerText = formatCurrency(subtotal);
-      
-      const discountRow = document.getElementById('docDiscountRow');
-      if (discountAmount > 0) {
-        discountRow.classList.remove('hidden');
-        document.getElementById('docDiscount').innerText = `-${formatCurrency(discountAmount)}`;
-      } else {
-        discountRow.classList.add('hidden');
-      }
-
-      document.getElementById('docTotalAmount').innerText = formatCurrency(totalAmount);
-      document.getElementById('docAdvancePaid').innerText = `-${formatCurrency(advancePaid)}`;
-      document.getElementById('docBalanceDue').innerText = formatCurrency(balanceDue);
-
-      // Payment Details
-      const upiIdVal = document.getElementById('upiId').value.trim();
-      document.getElementById('docUpiId').innerText = upiIdVal || '-';
-      document.getElementById('docBankName').innerText = document.getElementById('bankName').value || '-';
-      document.getElementById('docAccountName').innerText = document.getElementById('bankAccountName').value || '-';
-      document.getElementById('docAccountNumber').innerText = document.getElementById('bankAccountNumber').value || '-';
-      document.getElementById('docIfsc').innerText = document.getElementById('bankIfsc').value || '-';
-
-      // Dynamic UPI QR Code Generation
-      // Amount targeted is balance due if > 0, else total amount
-      const targetPayAmount = balanceDue > 0 ? balanceDue : totalAmount;
-      const payeeName = encodeURIComponent(document.getElementById('bankAccountName').value || 'Bridal Artistry');
-      const upiLink = `upi://pay?pa=${encodeURIComponent(upiIdVal)}&pn=${payeeName}&am=${targetPayAmount}&cu=INR`;
-      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}&bgcolor=ffffff&color=2c2727&margin=1`;
-      document.getElementById('docUpiQrCode').src = qrApiUrl;
-
-      // Terms & Conditions list
-      const termsRaw = document.getElementById('termsInput').value;
-      const termsListEl = document.getElementById('docTermsList');
-      termsListEl.innerHTML = '';
-      termsRaw.split('\n').filter(t => t.trim().length > 0).forEach(term => {
-        const li = document.createElement('li');
-        li.innerText = term.trim();
-        termsListEl.appendChild(li);
-      });
-
-      // Thank you note
-      document.getElementById('docThankYouNote').innerText = document.getElementById('thankYouInput').value || 'Thank you for choosing us for your special day.';
-    }
-
-    function formatDateStr(dateStr) {
-      if (!dateStr) return '-';
-      try {
-        const parts = dateStr.split('-');
-        if (parts.length === 3) {
-          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        if (s.desc.trim() !== "" || q > 0 || r > 0) {
+          const tr = document.createElement("tr");
+          tr.className = "border-b border-stone-100";
+          tr.innerHTML = `
+            <td class="py-1 px-2">${s.desc || "-"}</td>
+            <td class="py-1 px-2 text-center text-stone-500">${s.qty || "-"}</td>
+            <td class="py-1 px-2 text-right">${r > 0 ? formatCurrency(r) : "-"}</td>
+            <td class="py-1 px-2 text-right font-medium">${amt > 0 ? formatCurrency(amt) : "-"}</td>
+          `;
+          tableBody.appendChild(tr);
         }
-        return dateStr;
-      } catch (e) {
-        return dateStr;
-      }
-    }
-
-    // 1-Click WhatsApp Share formatted message
-    function shareViaWhatsApp() {
-      const brideName = document.getElementById('brideName').value || 'Bride';
-      const phone = document.getElementById('bridePhone').value.replace(/[^0-9]/g, '');
-      const invoiceNo = document.getElementById('invoiceNumber').value || 'INV-001';
-      const weddingDate = formatDateStr(document.getElementById('serviceDate').value);
-      const totalAmount = document.getElementById('docTotalAmount').innerText;
-      const advancePaid = document.getElementById('docAdvancePaid').innerText;
-      const balanceDue = document.getElementById('docBalanceDue').innerText;
-      const upiId = document.getElementById('upiId').value;
-      const brand = document.getElementById('brandName').value;
-
-      const message = 
-`✨ *${brand}* ✨
-Bridal Hairstyling & Beauty Services
-
-Dear ${brideName},
-Thank you for booking with us! Here is your bridal invoice summary:
-
-🧾 *Invoice No:* #${invoiceNo}
-📅 *Event Date:* ${weddingDate}
-💰 *Total Amount:* ${totalAmount}
-✅ *Advance Paid:* ${advancePaid}
-🌟 *Balance Due:* ${balanceDue}
-
-*Payment Details:*
-• UPI ID: ${upiId}
-• Balance is payable on or before your wedding date.
-
-Thank you for choosing us for your special day! 💕`;
-
-      const encodedMsg = encodeURIComponent(message);
-      const waUrl = phone ? `https://wa.me/${phone}?text=${encodedMsg}` : `https://api.whatsapp.com/send?text=${encodedMsg}`;
-      window.open(waUrl, '_blank');
-      showToast("Opened WhatsApp with invoice details!");
-    }
-
-    function getStoredBookings() {
-      try {
-        const data = localStorage.getItem('luxe_bridal_invoices');
-        return data ? JSON.parse(data) : [];
-      } catch (e) {
-        return [];
-      }
-    }
-
-    function saveCurrentInvoice() {
-      const brideName = document.getElementById('brideName').value.trim() || 'Valued Bride';
-      const invoiceNo = document.getElementById('invoiceNumber').value.trim() || 'INV-001';
-      const totalAmount = document.getElementById('docTotalAmount').innerText;
-      const balanceDue = document.getElementById('docBalanceDue').innerText;
-
-      const bookingRecord = {
-        id: activeBookingId || 'booking_' + Date.now(),
-        invoiceNumber: invoiceNo,
-        brideName: brideName,
-        bridePhone: document.getElementById('bridePhone').value,
-        brideEmail: document.getElementById('brideEmail').value,
-        eventVenue: document.getElementById('eventVenue').value,
-        eventLocation: document.getElementById('eventLocation').value,
-        invoiceDate: document.getElementById('invoiceDate').value,
-        serviceDate: document.getElementById('serviceDate').value,
-        status: document.getElementById('invoiceStatus').value,
-        brandName: document.getElementById('brandName').value,
-        brandTagline: document.getElementById('brandTagline').value,
-        brandPhone: document.getElementById('brandPhone').value,
-        brandEmail: document.getElementById('brandEmail').value,
-        brandLocation: document.getElementById('brandLocation').value,
-        brandInstagram: document.getElementById('brandInstagram').value,
-        currencySymbol: document.getElementById('currencySymbol').value,
-        services: JSON.parse(JSON.stringify(currentServices)),
-        discount: document.getElementById('discountInput').value,
-        discountType: document.getElementById('discountType').value,
-        advancePaid: document.getElementById('advancePaidInput').value,
-        upiId: document.getElementById('upiId').value,
-        bankName: document.getElementById('bankName').value,
-        bankAccountName: document.getElementById('bankAccountName').value,
-        bankAccountNumber: document.getElementById('bankAccountNumber').value,
-        bankIfsc: document.getElementById('bankIfsc').value,
-        terms: document.getElementById('termsInput').value,
-        thankYou: document.getElementById('thankYouInput').value,
-        totalAmount: totalAmount,
-        balanceDue: balanceDue,
-        updatedAt: new Date().toISOString()
-      };
-
-      const stored = getStoredBookings();
-      const existingIndex = stored.findIndex(b => b.id === bookingRecord.id);
-
-      if (existingIndex >= 0) {
-        stored[existingIndex] = bookingRecord;
-      } else {
-        stored.unshift(bookingRecord);
-      }
-
-      localStorage.setItem('luxe_bridal_invoices', JSON.stringify(stored));
-      activeBookingId = bookingRecord.id;
-      updateSavedBookingsBadge();
-      showToast(`Invoice #${invoiceNo} for ${brideName} saved!`);
-    }
-
-    function renderHistoryList() {
-      const search = (document.getElementById('bookingSearchInput').value || '').toLowerCase();
-      const list = getStoredBookings();
-      const tbody = document.getElementById('historyTableBody');
-      const emptyState = document.getElementById('emptyBookingsState');
-
-      const filtered = list.filter(item => {
-        return (item.brideName && item.brideName.toLowerCase().includes(search)) ||
-               (item.invoiceNumber && item.invoiceNumber.toLowerCase().includes(search)) ||
-               (item.eventLocation && item.eventLocation.toLowerCase().includes(search));
       });
 
-      tbody.innerHTML = '';
+      const discount = Number(document.getElementById("in_discount").value) || 0;
+      const advance = Number(document.getElementById("in_advance").value) || 0;
+      const total = Math.max(0, subtotal - discount);
+      const balance = Math.max(0, total - advance);
 
-      if (filtered.length === 0) {
-        emptyState.classList.remove('hidden');
+      document.getElementById("out_subtotal").innerText = formatCurrency(subtotal);
+      
+      const discRow = document.getElementById("row_discount");
+      if (discount > 0) {
+        discRow.classList.remove("hidden");
+        document.getElementById("out_discount").innerText = "- " + formatCurrency(discount);
+      } else {
+        discRow.classList.add("hidden");
+      }
+
+      document.getElementById("out_total").innerText = formatCurrency(total);
+      document.getElementById("out_advance").innerText = "- " + formatCurrency(advance);
+      document.getElementById("out_balance").innerText = formatCurrency(balance);
+
+      const upi = document.getElementById("in_upi").value.trim();
+      document.getElementById("out_upi").innerText = upi || "-";
+      document.getElementById("out_bank").innerText = document.getElementById("in_bank").value.trim() || "-";
+      document.getElementById("out_acc_name").innerText = document.getElementById("in_acc_name").value.trim() || "-";
+      document.getElementById("out_acc_no").innerText = document.getElementById("in_acc_no").value.trim() || "-";
+      document.getElementById("out_ifsc").innerText = document.getElementById("in_ifsc").value.trim() || "-";
+
+      document.getElementById("out_insta").innerText = document.getElementById("in_insta").value.trim() || "";
+      document.getElementById("out_footer_phone").innerText = document.getElementById("in_footer_phone").value.trim() || "";
+
+      renderQRCode(upi, balance, stylist || "Deepz Hairstylish");
+    }
+
+    function renderQRCode(upiId, balance, name) {
+      const qrDiv = document.getElementById("qrcode");
+      qrDiv.innerHTML = "";
+      if (!upiId) {
+        qrDiv.innerHTML = '<span class="text-[7px] text-stone-400 text-center px-1">UPI QR</span>';
         return;
       }
-
-      emptyState.classList.add('hidden');
-
-      filtered.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-rosegold-50/50 transition";
-
-        let statusClass = "bg-rosegold-100 text-rosegold-800";
-        if (item.status === 'Fully Settled') statusClass = "bg-emerald-100 text-emerald-800";
-        if (item.status === 'Payment Pending') statusClass = "bg-amber-100 text-amber-800";
-
-        tr.innerHTML = `
-          <td class="py-3.5 px-4 font-mono font-bold text-stone-900">#${escapeHtml(item.invoiceNumber)}</td>
-          <td class="py-3.5 px-4">
-            <span class="font-serif font-bold text-stone-900 block">${escapeHtml(item.brideName)}</span>
-            <span class="text-[10px] text-stone-400">${escapeHtml(item.eventVenue || '')}</span>
-          </td>
-          <td class="py-3.5 px-4 text-stone-600 font-mono text-[11px]">${formatDateStr(item.serviceDate)}</td>
-          <td class="py-3.5 px-4 font-mono font-semibold text-stone-800">${item.totalAmount || '₹0'}</td>
-          <td class="py-3.5 px-4 font-mono font-bold text-rosegold-700">${item.balanceDue || '₹0'}</td>
-          <td class="py-3.5 px-4">
-            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusClass}">
-              ${item.status}
-            </span>
-          </td>
-          <td class="py-3.5 px-4 text-right space-x-1.5">
-            <button onclick="loadBooking('${item.id}')" class="px-2.5 py-1 bg-rosegold-100 text-rosegold-800 hover:bg-rosegold-200 rounded-lg text-xs font-semibold transition" title="Open in editor">
-              <i class="fa-solid fa-pen-to-square"></i> Open
-            </button>
-            <button onclick="deleteBooking('${item.id}')" class="px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs font-semibold transition" title="Delete">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
+      const payeeName = encodeURIComponent(name);
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${payeeName}&am=${balance}&cu=INR&tn=BridalHairInvoice`;
+      
+      qrcodeInstance = new QRCode(qrDiv, {
+        text: upiUrl,
+        width: 56,
+        height: 56,
+        colorDark: "#1C1917",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
       });
     }
 
-    function loadBooking(id) {
-      const list = getStoredBookings();
-      const booking = list.find(b => b.id === id);
-      if (!booking) return;
+    function shareViaWhatsApp() {
+      const bridePhone = document.getElementById("in_bride_phone").value.replace(/[^0-9]/g, "");
+      const brideName = document.getElementById("in_bride_name").value.trim() || "Bride";
+      const invNo = document.getElementById("in_inv_no").value.trim() || "INV";
+      const balance = document.getElementById("out_balance").innerText;
+      const upi = document.getElementById("in_upi").value.trim();
 
-      activeBookingId = booking.id;
-      document.getElementById('invoiceNumber').value = booking.invoiceNumber || 'INV-001';
-      document.getElementById('brideName').value = booking.brideName || '';
-      document.getElementById('bridePhone').value = booking.bridePhone || '';
-      document.getElementById('brideEmail').value = booking.brideEmail || '';
-      document.getElementById('eventVenue').value = booking.eventVenue || '';
-      document.getElementById('eventLocation').value = booking.eventLocation || '';
-      document.getElementById('invoiceDate').value = booking.invoiceDate || '';
-      document.getElementById('serviceDate').value = booking.serviceDate || '';
-      document.getElementById('invoiceStatus').value = booking.status || 'Advance Received';
+      const text = encodeURIComponent(
+        `Dear ${brideName},\n\n` +
+        `Thank you for booking with us! Here are your booking details for Invoice #${invNo}:\n` +
+        `• Balance Due: ${balance}\n` +
+        (upi ? `• UPI Payment ID: ${upi}\n\n` : `\n`) +
+        `Please settle the balance on or before the event date. Looking forward to making your special day memorable!`
+      );
 
-      if (booking.brandName) document.getElementById('brandName').value = booking.brandName;
-      if (booking.brandTagline) document.getElementById('brandTagline').value = booking.brandTagline;
-      if (booking.brandPhone) document.getElementById('brandPhone').value = booking.brandPhone;
-      if (booking.brandEmail) document.getElementById('brandEmail').value = booking.brandEmail;
-      if (booking.brandLocation) document.getElementById('brandLocation').value = booking.brandLocation;
-      if (booking.brandInstagram) document.getElementById('brandInstagram').value = booking.brandInstagram;
-      if (booking.currencySymbol) document.getElementById('currencySymbol').value = booking.currencySymbol;
-
-      if (booking.services && booking.services.length) {
-        currentServices = JSON.parse(JSON.stringify(booking.services));
-      }
-
-      document.getElementById('discountInput').value = booking.discount || 0;
-      document.getElementById('discountType').value = booking.discountType || 'fixed';
-      document.getElementById('advancePaidInput').value = booking.advancePaid || 0;
-
-      if (booking.upiId) document.getElementById('upiId').value = booking.upiId;
-      if (booking.bankName) document.getElementById('bankName').value = booking.bankName;
-      if (booking.bankAccountName) document.getElementById('bankAccountName').value = booking.bankAccountName;
-      if (booking.bankAccountNumber) document.getElementById('bankAccountNumber').value = booking.bankAccountNumber;
-      if (booking.bankIfsc) document.getElementById('bankIfsc').value = booking.bankIfsc;
-
-      if (booking.terms) document.getElementById('termsInput').value = booking.terms;
-      if (booking.thankYou) document.getElementById('thankYouInput').value = booking.thankYou;
-
-      renderServicesFormTable();
-      switchMainTab('editor');
-      showToast(`Loaded booking for ${booking.brideName}`);
+      const url = bridePhone ? `https://wa.me/${bridePhone}?text=${text}` : `https://wa.me/?text=${text}`;
+      window.open(url, "_blank");
     }
 
-    function deleteBooking(id) {
-      let list = getStoredBookings();
-      list = list.filter(b => b.id !== id);
-      localStorage.setItem('luxe_bridal_invoices', JSON.stringify(list));
-      if (activeBookingId === id) activeBookingId = null;
-      renderHistoryList();
-      updateSavedBookingsBadge();
-      showToast("Booking deleted");
+    function resetFormToBlank() {
+      document.querySelectorAll("input").forEach(i => i.value = "");
+      services = [
+        { desc: "Bridal Hairstyling", qty: "", rate: "" },
+        { desc: "Hair Trial", qty: "", rate: "" },
+        { desc: "Bridesmaid Hairstyling", qty: "", rate: "" },
+        { desc: "Family Hairstyling", qty: "", rate: "" },
+        { desc: "Travel Charges", qty: "", rate: "" },
+        { desc: "Additional Services", qty: "", rate: "" }
+      ];
+      renderServiceInputs();
+      updateInvoice();
     }
 
-    function clearAllBookings() {
-      localStorage.removeItem('luxe_bridal_invoices');
-      renderHistoryList();
-      updateSavedBookingsBadge();
-      showToast("Cleared all saved bookings");
-    }
-
-    function updateSavedBookingsBadge() {
-      const list = getStoredBookings();
-      document.getElementById('savedCountBadge').innerText = list.length;
-    }
-
-    function resetToSampleInvoice() {
-      activeBookingId = null;
-      document.getElementById('invoiceNumber').value = 'INV-' + Math.floor(100 + Math.random() * 900);
-      document.getElementById('brideName').value = 'Pooja Sharma';
-      document.getElementById('bridePhone').value = '+91 98201 11223';
-      document.getElementById('brideEmail').value = 'pooja.sharma@gmail.com';
-      document.getElementById('eventVenue').value = 'The Grand Heritage Ballroom';
-      document.getElementById('eventLocation').value = 'Udaipur, Rajasthan';
-      document.getElementById('discountInput').value = 1500;
-      document.getElementById('advancePaidInput').value = 15000;
-      
-      currentServices = JSON.parse(JSON.stringify(DEFAULT_SERVICES));
-      renderServicesFormTable();
-      showToast("Reset to sample bridal template");
-    }
-
-    function escapeHtml(text) {
-      if (!text) return '';
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+    window.onload = function() {
+      renderServiceInputs();
+      updateInvoice();
+    };
   </script>
 </body>
 </html>
