@@ -92,6 +92,11 @@
         margin: 0 !important;
         page-break-inside: avoid !important;
       }
+      .print-footer-row {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
       * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
@@ -99,7 +104,7 @@
     }
   </style>
 </head>
-<body class="bg-stone-100 text-stone-800 font-sans antialiased min-h-screen pb-20 lg:pb-8">
+<body class="bg-stone-100 text-stone-800 font-sans antialiased min-h-screen pb-28 lg:pb-8">
 
   <!-- Header -->
   <header class="no-print bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40 px-4 py-2.5 sm:px-8">
@@ -131,11 +136,11 @@
   </header>
 
   <!-- Mobile Floating Segment Switcher -->
-  <div class="no-print lg:hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-40 bg-stone-900/95 backdrop-blur-md p-1 rounded-full shadow-lg border border-stone-700 flex items-center gap-1">
-    <button id="tab-btn-form" onclick="switchMobileTab('form')" class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5">
+  <div class="no-print lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-stone-900/95 backdrop-blur-md p-1.5 rounded-full shadow-2xl border border-stone-700 flex items-center gap-1">
+    <button id="tab-btn-form" onclick="switchMobileTab('form')" class="px-4 py-2 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5 shadow-sm">
       <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit Form
     </button>
-    <button id="tab-btn-preview" onclick="switchMobileTab('preview')" class="px-4 py-1.5 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5">
+    <button id="tab-btn-preview" onclick="switchMobileTab('preview')" class="px-4 py-2 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5">
       <i data-lucide="eye" class="w-3.5 h-3.5"></i> Live Invoice
     </button>
   </div>
@@ -305,8 +310,8 @@
       </section>
 
       <!-- PREVIEW COLUMN -->
-      <section id="preview-panel" class="hidden lg:flex lg:col-span-7 justify-center">
-        <div id="invoice-doc" class="invoice-container bg-white border border-stone-200 shadow-xl rounded-lg w-full max-w-[210mm] p-6 sm:p-7 text-stone-900 space-y-3.5">
+      <section id="preview-panel" class="hidden lg:flex lg:col-span-7 justify-center overflow-x-auto">
+        <div id="invoice-doc" class="invoice-container bg-white border border-stone-200 shadow-xl rounded-lg w-full max-w-[210mm] p-5 sm:p-7 text-stone-900 space-y-3.5">
           
           <!-- HEADER -->
           <div class="border-b-2 border-gold-300 pb-2.5 flex justify-between items-start gap-3">
@@ -350,7 +355,7 @@
 
           <!-- SERVICES TABLE -->
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-[10px] border-collapse">
+            <table class="w-full text-left text-[10px] border-collapse min-w-[300px]">
               <thead>
                 <tr class="border-b border-stone-300 text-[9px] tracking-wider uppercase font-semibold text-stone-500 bg-stone-50">
                   <th class="py-1 px-2 font-medium">Service Description</th>
@@ -390,18 +395,18 @@
           </div>
 
           <!-- PAYMENT DETAILS & ENLARGED UPI QR -->
-          <div class="border border-stone-200 rounded-lg p-3 flex justify-between items-center bg-white shadow-sm">
-            <div class="text-[9.5px] space-y-1 text-stone-700 max-w-[58%]">
+          <div class="border border-stone-200 rounded-lg p-3 flex justify-between items-center bg-white shadow-sm gap-2">
+            <div class="text-[9.5px] space-y-1 text-stone-700 flex-grow min-w-0">
               <p class="text-[8.5px] uppercase tracking-wider font-bold text-gold-800 mb-0.5">PAYMENT DETAILS</p>
-              <p><span class="font-semibold text-stone-900">UPI ID:</span> <span id="out_upi">deeparubinipalanisamy@oksbi</span></p>
+              <p class="truncate"><span class="font-semibold text-stone-900">UPI ID:</span> <span id="out_upi">deeparubinipalanisamy@oksbi</span></p>
               <p><span class="font-semibold text-stone-900">Bank:</span> <span id="out_bank">Karur Vysya Bank</span></p>
               <p><span class="font-semibold text-stone-900">A/C Name:</span> <span id="out_acc_name">Deeparubini P</span></p>
               <p><span class="font-semibold text-stone-900">A/C No:</span> <span id="out_acc_no">1643155000112456</span></p>
               <p><span class="font-semibold text-stone-900">IFSC:</span> <span id="out_ifsc">KVBL0001643</span></p>
             </div>
-            <!-- Enlarged QR badge: 120x120px with higher contrast border -->
-            <div class="flex flex-col items-center justify-center p-2 bg-stone-50 border border-stone-300 rounded-lg shadow-sm">
-              <div id="qrcode" class="w-[120px] h-[120px] flex items-center justify-center bg-white p-1 rounded border border-stone-20"></div>
+            <!-- Enlarged QR badge: 120x120px with flex-shrink-0 to prevent shrinking -->
+            <div class="flex-shrink-0 flex flex-col items-center justify-center p-2 bg-stone-50 border border-stone-300 rounded-lg shadow-sm">
+              <div id="qrcode" class="w-[120px] h-[120px] flex items-center justify-center bg-white p-1 rounded border border-stone-200"></div>
               <span class="text-[8.5px] font-bold tracking-wider uppercase text-gold-800 mt-1.5">Scan to Pay UPI</span>
             </div>
           </div>
@@ -418,15 +423,15 @@
               <li>Additional services requested on the event day will be charged separately.</li>
             </ol>
             
-            <!-- FOOTER WITH CLICKABLE URL -->
-            <div class="mt-2.5 pt-1.5 border-t border-stone-200 flex justify-between items-center text-[9px] font-medium text-stone-700">
-              <span class="font-serif italic text-gold-800">Thank you for choosing us for your special day.</span>
-              <div class="flex items-center gap-2">
-                <a id="out_insta_link" href="https://instagram.com/deepzhairstylist" target="_blank" rel="noopener noreferrer" class="text-gold-700 underline font-semibold">
+            <!-- NON-COLLAPSING RESPONSIVE FOOTER -->
+            <div class="print-footer-row mt-2.5 pt-2 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5 text-[9px] font-medium text-stone-700">
+              <span class="font-serif italic text-gold-800 text-[9.5px]">Thank you for choosing us for your special day.</span>
+              <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                <a id="out_insta_link" href="https://instagram.com/deepzhairstylist" target="_blank" rel="noopener noreferrer" class="text-gold-700 underline font-semibold whitespace-nowrap">
                   Instagram: @deepzhairstylist
                 </a>
-                <span>•</span>
-                <span id="out_footer_phone">+91 98945 70313</span>
+                <span class="text-stone-400">•</span>
+                <span id="out_footer_phone" class="whitespace-nowrap font-semibold text-stone-800">+91 98945 70313</span>
               </div>
             </div>
           </div>
@@ -460,13 +465,13 @@
       if (tab === "form") {
         formPanel.classList.remove("hidden");
         previewPanel.classList.add("hidden");
-        btnForm.className = "px-4 py-1.5 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5";
-        btnPreview.className = "px-4 py-1.5 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5";
+        btnForm.className = "px-4 py-2 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5 shadow-sm";
+        btnPreview.className = "px-4 py-2 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5";
       } else {
         formPanel.classList.add("hidden");
         previewPanel.classList.remove("hidden");
-        btnPreview.className = "px-4 py-1.5 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5";
-        btnForm.className = "px-4 py-1.5 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5";
+        btnPreview.className = "px-4 py-2 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5 shadow-sm";
+        btnForm.className = "px-4 py-2 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5";
       }
     }
 
@@ -593,7 +598,6 @@
       const payeeName = encodeURIComponent(name);
       const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${payeeName}&am=${balance}&cu=INR&tn=BridalHairInvoice`;
       
-      // Increased QR canvas size to 80x80px for instant mobile camera detection
       qrcodeInstance = new QRCode(qrDiv, {
         text: upiUrl,
         width: 120,
