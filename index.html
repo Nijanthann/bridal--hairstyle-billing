@@ -51,23 +51,22 @@
   </script>
 
   <style>
-    /* iOS input zoom prevention: must be 16px minimum on touch */
+    /* Prevent iOS Safari auto-zoom on inputs */
     @media (max-width: 768px) {
       input, select, textarea {
         font-size: 16px !important;
       }
     }
 
-    /* Print styling: Strict Single Page A4 Fit */
+    /* Print: strict single page without page break */
     @media print {
       @page {
         size: A4 portrait;
-        margin: 5mm 7mm;
+        margin: 6mm 8mm;
       }
       body {
         background: #fff !important;
         color: #111 !important;
-        font-size: 10.5px !important;
         margin: 0 !important;
         padding: 0 !important;
       }
@@ -87,8 +86,6 @@
         max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
-      }
-      .page-break-avoid {
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
@@ -99,10 +96,10 @@
     }
   </style>
 </head>
-<body class="bg-stone-100 text-stone-800 font-sans antialiased min-h-screen pb-20 lg:pb-6">
+<body class="bg-stone-100 text-stone-800 font-sans antialiased min-h-screen pb-20 lg:pb-8">
 
-  <!-- Top App Navigation -->
-  <header class="no-print bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40 px-3 py-2.5 sm:px-6">
+  <!-- Header -->
+  <header class="no-print bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40 px-4 py-2.5 sm:px-8">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <div class="w-8 h-8 rounded-full bg-gold-500/15 flex items-center justify-center text-gold-600">
@@ -114,12 +111,12 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-1.5 sm:gap-2">
-        <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 bg-stone-900 hover:bg-black text-white text-[11px] sm:text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-stone-900 hover:bg-black text-white text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
           <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-          <span>PDF / Print</span>
+          <span>Save PDF / Print</span>
         </button>
-        <button onclick="shareViaWhatsApp()" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
+        <button onclick="shareViaWhatsApp()" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-md shadow-sm transition active:scale-95">
           <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline">WhatsApp</span>
         </button>
@@ -130,22 +127,22 @@
     </div>
   </header>
 
-  <!-- Mobile Floating Segment Switcher (Forms vs Live Preview) -->
-  <div class="no-print lg:hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-40 bg-stone-900/90 backdrop-blur-md p-1 rounded-full shadow-lg border border-stone-700 flex items-center gap-1">
+  <!-- Mobile Floating Segment Switcher -->
+  <div class="no-print lg:hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-40 bg-stone-900/95 backdrop-blur-md p-1 rounded-full shadow-lg border border-stone-700 flex items-center gap-1">
     <button id="tab-btn-form" onclick="switchMobileTab('form')" class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-gold-600 transition flex items-center gap-1.5">
-      <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit Details
+      <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit Form
     </button>
     <button id="tab-btn-preview" onclick="switchMobileTab('preview')" class="px-4 py-1.5 rounded-full text-xs font-medium text-stone-300 hover:text-white transition flex items-center gap-1.5">
-      <i data-lucide="eye" class="w-3.5 h-3.5"></i> View Invoice
+      <i data-lucide="eye" class="w-3.5 h-3.5"></i> Live Invoice
     </button>
   </div>
 
-  <!-- Main Work Area -->
-  <main class="max-w-7xl mx-auto p-3 sm:p-5 lg:p-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto p-3 sm:p-5 lg:p-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       
       <!-- FORM COLUMN (Editor) -->
-      <section id="form-panel" class="no-print lg:col-span-5 space-y-4 bg-white p-4 sm:p-5 rounded-xl border border-stone-200 shadow-sm max-h-none lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
+      <section id="form-panel" class="no-print lg:col-span-5 space-y-4 bg-white p-4 sm:p-5 rounded-xl border border-stone-200 shadow-sm">
         
         <!-- Studio Details -->
         <div class="border-b border-stone-100 pb-3">
@@ -163,7 +160,7 @@
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Phone Number</label>
-              <input type="tel" inputmode="tel" id="in_studio_phone" placeholder="e.g. +91 98765 43210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="tel" inputmode="tel" id="in_studio_phone" placeholder="e.g. 9876543210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Email</label>
@@ -171,7 +168,7 @@
             </div>
             <div class="col-span-2">
               <label class="block font-medium text-stone-600 mb-0.5">City, State / Address</label>
-              <input type="text" id="in_studio_city" placeholder="e.g. Tiruppur, Tamil Nadu" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_studio_city" placeholder="e.g. Tiruppur" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
           </div>
         </div>
@@ -184,7 +181,7 @@
           <div class="grid grid-cols-3 gap-2 text-xs">
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Invoice #</label>
-              <input type="text" id="in_inv_no" placeholder="INV-001" oninput="updateInvoice()" class="w-full px-2 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_inv_no" placeholder="BH-012" oninput="updateInvoice()" class="w-full px-2 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Invoice Date</label>
@@ -197,19 +194,19 @@
           </div>
         </div>
 
-        <!-- Bill To / Bride Details -->
+        <!-- Bride Details -->
         <div class="border-b border-stone-100 pb-3">
           <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
-            <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Bride / Client Details
+            <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Bride Details
           </div>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div class="col-span-2">
               <label class="block font-medium text-stone-600 mb-0.5">Bride Name</label>
-              <input type="text" id="in_bride_name" placeholder="Enter bride's name" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded font-medium">
+              <input type="text" id="in_bride_name" placeholder="e.g. Pooja" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded font-medium">
             </div>
             <div>
-              <label class="block font-medium text-stone-600 mb-0.5">Phone (for WhatsApp)</label>
-              <input type="tel" inputmode="tel" id="in_bride_phone" placeholder="e.g. 9820111223" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <label class="block font-medium text-stone-600 mb-0.5">Phone</label>
+              <input type="tel" inputmode="tel" id="in_bride_phone" placeholder="e.g. 9876543210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Email</label>
@@ -217,16 +214,16 @@
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Event Venue</label>
-              <input type="text" id="in_venue" placeholder="e.g. Grand Palace Hall" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_venue" placeholder="e.g. Hall name / -" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
-              <label class="block font-medium text-stone-600 mb-0.5">Event Location</label>
-              <input type="text" id="in_location" placeholder="e.g. Coimbatore, Tamil Nadu" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <label class="block font-medium text-stone-600 mb-0.5">Location</label>
+              <input type="text" id="in_location" placeholder="e.g. Coimbatore" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
           </div>
         </div>
 
-        <!-- Services & Rates -->
+        <!-- Services -->
         <div class="border-b border-stone-100 pb-3">
           <div class="flex items-center justify-between mb-2">
             <span class="flex items-center gap-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
@@ -237,11 +234,11 @@
             </button>
           </div>
           <div id="service_input_rows" class="space-y-2">
-            <!-- Dynamic rows inserted by JS -->
+            <!-- Dynamic items -->
           </div>
         </div>
 
-        <!-- Payment Calculations -->
+        <!-- Totals & Payment -->
         <div class="border-b border-stone-100 pb-3">
           <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
             <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Discount & Advance
@@ -258,7 +255,7 @@
           </div>
         </div>
 
-        <!-- Bank & UPI Information -->
+        <!-- Bank & UPI -->
         <div class="border-b border-stone-100 pb-3">
           <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
             <i data-lucide="credit-card" class="w-3.5 h-3.5"></i> Payment & UPI Details
@@ -266,154 +263,152 @@
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div class="col-span-2">
               <label class="block font-medium text-stone-600 mb-0.5">UPI ID (Creates Dynamic QR)</label>
-              <input type="text" id="in_upi" placeholder="e.g. name@okhdfcbank" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_upi" placeholder="e.g. test@oksbi" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Bank Name</label>
-              <input type="text" id="in_bank" placeholder="e.g. HDFC Bank" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_bank" placeholder="e.g. SBI" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Account Name</label>
-              <input type="text" id="in_acc_name" placeholder="e.g. Deepz Hair Artistry" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" id="in_acc_name" placeholder="e.g. Test" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Account Number</label>
-              <input type="text" inputmode="numeric" id="in_acc_no" placeholder="e.g. 50100012345678" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="text" inputmode="numeric" id="in_acc_no" placeholder="e.g. 50215896553" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">IFSC Code</label>
-              <input type="text" id="in_ifsc" placeholder="e.g. HDFC0001234" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded uppercase">
+              <input type="text" id="in_ifsc" placeholder="e.g. SBIN0021" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded uppercase">
             </div>
           </div>
         </div>
 
-        <!-- Social / Footer -->
+        <!-- Footer Info -->
         <div>
           <div class="flex items-center gap-2 mb-2 text-gold-700 font-semibold text-xs tracking-wider uppercase">
             <i data-lucide="instagram" class="w-3.5 h-3.5"></i> Social & Contact Footer
           </div>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <label class="block font-medium text-stone-600 mb-0.5">Instagram Handle</label>
+              <label class="block font-medium text-stone-600 mb-0.5">Instagram</label>
               <input type="text" id="in_insta" placeholder="e.g. @deepzhairstylish" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
             <div>
               <label class="block font-medium text-stone-600 mb-0.5">Footer Phone</label>
-              <input type="tel" inputmode="tel" id="in_footer_phone" placeholder="e.g. +91 98765 43210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
+              <input type="tel" inputmode="tel" id="in_footer_phone" placeholder="e.g. 9876543210" oninput="updateInvoice()" class="w-full px-2.5 py-1.5 border border-stone-200 rounded">
             </div>
           </div>
         </div>
 
       </section>
 
-      <!-- PREVIEW COLUMN (1-Page Print View) -->
-      <section id="preview-panel" class="hidden lg:flex lg:col-span-7 justify-center overflow-x-auto">
-        <div id="invoice-doc" class="invoice-container bg-white border border-stone-200 shadow-xl rounded-lg w-full max-w-[210mm] min-h-[285mm] p-6 sm:p-8 text-stone-900 flex flex-col justify-between">
+      <!-- PREVIEW COLUMN (Clean, Gap-Free Document) -->
+      <section id="preview-panel" class="hidden lg:block lg:col-span-7">
+        <div id="invoice-doc" class="invoice-container bg-white border border-stone-200 shadow-xl rounded-lg w-full max-w-[210mm] mx-auto p-6 sm:p-7 text-stone-900 space-y-4">
           
-          <div>
-            <!-- HEADER -->
-            <div class="border-b-2 border-gold-300 pb-3 flex justify-between items-start gap-3">
-              <div>
-                <h1 id="out_stylist" class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-900 leading-tight">Deepz Hairstylish</h1>
-                <p id="out_tagline" class="font-display text-xs sm:text-sm italic text-gold-700 tracking-wide">Bridal Hairstyling & Beauty Services</p>
-                <div class="flex flex-wrap items-center gap-x-1.5 text-[10px] sm:text-[11px] text-stone-500 mt-1">
-                  <span id="out_studio_phone">+91 98765 43210</span>
-                  <span>•</span>
-                  <span id="out_studio_email">hello@deepzstyling.com</span>
-                  <span>•</span>
-                  <span id="out_studio_city">Tiruppur, Tamil Nadu</span>
-                </div>
-              </div>
-              <div class="text-right">
-                <span class="inline-block px-2 py-0.5 text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold bg-gold-100 text-gold-800 rounded">
-                  TAX & BOOKING INVOICE
-                </span>
-                <div class="text-[10px] sm:text-[11px] text-stone-600 mt-1 space-y-0.5">
-                  <p><span class="font-semibold text-stone-800">Invoice No.:</span> <span id="out_inv_no">-</span></p>
-                  <p><span class="font-semibold text-stone-800">Date:</span> <span id="out_inv_date">-</span></p>
-                  <p><span class="font-semibold text-stone-800">Service:</span> <span id="out_service_date" class="text-gold-800 font-bold">-</span></p>
-                </div>
+          <!-- HEADER -->
+          <div class="border-b-2 border-gold-300 pb-3 flex justify-between items-start gap-3">
+            <div>
+              <h1 id="out_stylist" class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-900 leading-tight">Deepz Hairstylish</h1>
+              <p id="out_tagline" class="font-display text-xs italic text-gold-700 tracking-wide">Bridal Hairstyling & Beauty Services</p>
+              <div class="flex flex-wrap items-center gap-x-1.5 text-[10px] text-stone-500 mt-1">
+                <span id="out_studio_phone">-</span>
+                <span>•</span>
+                <span id="out_studio_email">-</span>
+                <span>•</span>
+                <span id="out_studio_city">-</span>
               </div>
             </div>
-
-            <!-- CLIENT / BILL TO -->
-            <div class="mt-3 bg-stone-50 border border-stone-200/80 rounded p-2.5 sm:p-3 grid grid-cols-2 gap-2 text-[10.5px] sm:text-[11px]">
-              <div>
-                <p class="text-[9px] uppercase tracking-wider font-bold text-gold-800">BILL TO (BRIDE)</p>
-                <p id="out_bride_name" class="font-semibold text-stone-900 text-xs mt-0.5">-</p>
-                <p class="text-stone-600">Phone: <span id="out_bride_phone" class="text-stone-800">-</span></p>
-                <p class="text-stone-600">Email: <span id="out_bride_email" class="text-stone-800">-</span></p>
-              </div>
-              <div>
-                <p class="text-[9px] uppercase tracking-wider font-bold text-gold-800">EVENT DETAILS</p>
-                <p class="text-stone-600 mt-0.5">Venue: <span id="out_venue" class="font-medium text-stone-800">-</span></p>
-                <p class="text-stone-600">Location: <span id="out_location" class="font-medium text-stone-800">-</span></p>
-              </div>
-            </div>
-
-            <!-- SERVICES TABLE -->
-            <div class="mt-3 overflow-x-auto">
-              <table class="w-full text-left text-[10.5px] sm:text-[11px] border-collapse min-w-[320px]">
-                <thead>
-                  <tr class="border-b border-stone-300 text-[9.5px] sm:text-[10px] tracking-wider uppercase font-semibold text-stone-500 bg-stone-50">
-                    <th class="py-1 px-2 font-medium">Service Description</th>
-                    <th class="py-1 px-2 text-center font-medium w-10">Qty</th>
-                    <th class="py-1 px-2 text-right font-medium w-20">Rate</th>
-                    <th class="py-1 px-2 text-right font-medium w-20">Amount</th>
-                  </tr>
-                </thead>
-                <tbody id="invoice_services_table" class="divide-y divide-stone-100 text-stone-800">
-                  <!-- Dynamic Service Rows inserted by JS -->
-                </tbody>
-              </table>
-            </div>
-
-            <!-- PAYMENT TOTALS & ADVANCE -->
-            <div class="mt-2.5 flex justify-end">
-              <div class="w-60 sm:w-64 space-y-1 text-[10.5px] sm:text-[11px] bg-stone-50 p-2.5 rounded border border-stone-200">
-                <div class="flex justify-between text-stone-600">
-                  <span>Subtotal:</span>
-                  <span id="out_subtotal" class="font-semibold text-stone-900">₹0</span>
-                </div>
-                <div id="row_discount" class="flex justify-between text-emerald-700 hidden">
-                  <span>Discount:</span>
-                  <span id="out_discount">- ₹0</span>
-                </div>
-                <div class="flex justify-between text-stone-900 border-t border-stone-200 pt-1 font-semibold">
-                  <span>Total Amount:</span>
-                  <span id="out_total">₹0</span>
-                </div>
-                <div class="flex justify-between text-stone-600">
-                  <span>Advance Paid:</span>
-                  <span id="out_advance" class="font-semibold text-stone-900">- ₹0</span>
-                </div>
-                <div class="flex justify-between text-stone-900 border-t-2 border-stone-900 pt-1 font-bold text-xs bg-gold-100/60 p-1.5 rounded">
-                  <span class="text-gold-900">Balance Due:</span>
-                  <span id="out_balance" class="text-gold-900">₹0</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- PAYMENT DETAILS & UPI QR -->
-            <div class="mt-3 border border-stone-200 rounded p-2.5 flex justify-between items-center bg-white page-break-avoid">
-              <div class="text-[9.5px] sm:text-[10px] space-y-0.5 text-stone-700 max-w-[65%]">
-                <p class="text-[8.5px] uppercase tracking-wider font-bold text-gold-800 mb-0.5">PAYMENT DETAILS</p>
-                <p><span class="font-semibold text-stone-900">UPI ID:</span> <span id="out_upi">-</span></p>
-                <p><span class="font-semibold text-stone-900">Bank:</span> <span id="out_bank">-</span></p>
-                <p><span class="font-semibold text-stone-900">A/C Name:</span> <span id="out_acc_name">-</span></p>
-                <p><span class="font-semibold text-stone-900">A/C No:</span> <span id="out_acc_no">-</span></p>
-                <p><span class="font-semibold text-stone-900">IFSC:</span> <span id="out_ifsc">-</span></p>
-              </div>
-              <div class="flex flex-col items-center justify-center p-1 bg-stone-50 border border-stone-200 rounded">
-                <div id="qrcode" class="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center"></div>
-                <span class="text-[7.5px] sm:text-[8px] font-bold tracking-tight uppercase text-stone-500 mt-1">UPI Scan</span>
+            <div class="text-right">
+              <span class="inline-block px-2 py-0.5 text-[9px] tracking-widest uppercase font-semibold bg-gold-100 text-gold-800 rounded">
+                TAX & BOOKING INVOICE
+              </span>
+              <div class="text-[10px] text-stone-600 mt-1 space-y-0.5">
+                <p><span class="font-semibold text-stone-800">Invoice No.:</span> <span id="out_inv_no">-</span></p>
+                <p><span class="font-semibold text-stone-800">Date:</span> <span id="out_inv_date">-</span></p>
+                <p><span class="font-semibold text-stone-800">Service:</span> <span id="out_service_date" class="text-gold-800 font-bold">-</span></p>
               </div>
             </div>
           </div>
 
-          <!-- FOOTER: TERMS & CONDITIONS -->
-          <div class="mt-3 border-t border-stone-200 pt-2 text-[8.5px] sm:text-[9px] text-stone-500 leading-tight page-break-avoid">
-            <p class="font-bold text-stone-800 uppercase tracking-wider text-[8.5px] mb-1">TERMS & CONDITIONS</p>
+          <!-- CLIENT & EVENT DETAILS -->
+          <div class="bg-stone-50 border border-stone-200/80 rounded p-2.5 grid grid-cols-2 gap-2 text-[10px]">
+            <div>
+              <p class="text-[8.5px] uppercase tracking-wider font-bold text-gold-800">BILL TO (BRIDE)</p>
+              <p id="out_bride_name" class="font-semibold text-stone-900 text-[11px] mt-0.5">-</p>
+              <p class="text-stone-600">Phone: <span id="out_bride_phone" class="text-stone-800">-</span></p>
+              <p class="text-stone-600">Email: <span id="out_bride_email" class="text-stone-800">-</span></p>
+            </div>
+            <div>
+              <p class="text-[8.5px] uppercase tracking-wider font-bold text-gold-800">EVENT DETAILS</p>
+              <p class="text-stone-600 mt-0.5">Venue: <span id="out_venue" class="font-medium text-stone-800">-</span></p>
+              <p class="text-stone-600">Location: <span id="out_location" class="font-medium text-stone-800">-</span></p>
+            </div>
+          </div>
+
+          <!-- SERVICES TABLE -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-[10px] border-collapse">
+              <thead>
+                <tr class="border-b border-stone-300 text-[9px] tracking-wider uppercase font-semibold text-stone-500 bg-stone-50">
+                  <th class="py-1 px-2 font-medium">Service Description</th>
+                  <th class="py-1 px-2 text-center font-medium w-10">Qty</th>
+                  <th class="py-1 px-2 text-right font-medium w-20">Rate</th>
+                  <th class="py-1 px-2 text-right font-medium w-20">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="invoice_services_table" class="divide-y divide-stone-100 text-stone-800">
+                <!-- Dynamic Items -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- TOTALS SUMMARY -->
+          <div class="flex justify-end pt-1">
+            <div class="w-56 space-y-1 text-[10px] bg-stone-50 p-2.5 rounded border border-stone-200">
+              <div class="flex justify-between text-stone-600">
+                <span>Subtotal:</span>
+                <span id="out_subtotal" class="font-semibold text-stone-900">₹0</span>
+              </div>
+              <div id="row_discount" class="flex justify-between text-emerald-700 hidden">
+                <span>Discount:</span>
+                <span id="out_discount">- ₹0</span>
+              </div>
+              <div class="flex justify-between text-stone-900 border-t border-stone-200 pt-1 font-semibold">
+                <span>Total Amount:</span>
+                <span id="out_total">₹0</span>
+              </div>
+              <div class="flex justify-between text-stone-600">
+                <span>Advance Paid:</span>
+                <span id="out_advance" class="font-semibold text-stone-900">- ₹0</span>
+              </div>
+              <div class="flex justify-between text-stone-900 border-t border-stone-900 pt-1 font-bold text-[11px] bg-gold-100/60 p-1 rounded">
+                <span class="text-gold-900">Balance Due:</span>
+                <span id="out_balance" class="text-gold-900">₹0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAYMENT DETAILS & UPI QR -->
+          <div class="border border-stone-200 rounded p-2.5 flex justify-between items-center bg-white">
+            <div class="text-[9.5px] space-y-0.5 text-stone-700 max-w-[65%]">
+              <p class="text-[8px] uppercase tracking-wider font-bold text-gold-800 mb-0.5">PAYMENT DETAILS</p>
+              <p><span class="font-semibold text-stone-900">UPI ID:</span> <span id="out_upi">-</span></p>
+              <p><span class="font-semibold text-stone-900">Bank:</span> <span id="out_bank">-</span></p>
+              <p><span class="font-semibold text-stone-900">A/C Name:</span> <span id="out_acc_name">-</span></p>
+              <p><span class="font-semibold text-stone-900">A/C No:</span> <span id="out_acc_no">-</span></p>
+              <p><span class="font-semibold text-stone-900">IFSC:</span> <span id="out_ifsc">-</span></p>
+            </div>
+            <div class="flex flex-col items-center justify-center p-1.5 bg-stone-50 border border-stone-200 rounded">
+              <div id="qrcode" class="w-14 h-14 flex items-center justify-center"></div>
+              <span class="text-[7.5px] font-bold tracking-tight uppercase text-stone-500 mt-1">UPI Scan</span>
+            </div>
+          </div>
+
+          <!-- TERMS & CONDITIONS (Directly below payment details with no empty gap) -->
+          <div class="border-t border-stone-200 pt-2.5 text-[8.5px] text-stone-500 leading-tight">
+            <p class="font-bold text-stone-800 uppercase tracking-wider text-[8px] mb-1">TERMS & CONDITIONS</p>
             <ol class="list-decimal pl-3 space-y-0.5">
               <li>Booking is confirmed after receipt of the advance payment.</li>
               <li>Balance payment is due on or before the service date.</li>
@@ -423,7 +418,7 @@
               <li>Additional services requested on the event day will be charged separately.</li>
             </ol>
             
-            <div class="mt-2 pt-1 border-t border-stone-200 flex justify-between items-center text-[9px] sm:text-[10px] font-medium text-stone-700">
+            <div class="mt-2.5 pt-1.5 border-t border-stone-200 flex justify-between items-center text-[9px] font-medium text-stone-700">
               <span class="font-serif italic text-gold-800">Thank you for choosing us for your special day.</span>
               <div class="flex items-center gap-2">
                 <span id="out_insta"></span>
@@ -451,7 +446,6 @@
 
     let qrcodeInstance = null;
 
-    // Mobile Segment Switching
     function switchMobileTab(tab) {
       const formPanel = document.getElementById("form-panel");
       const previewPanel = document.getElementById("preview-panel");
@@ -536,17 +530,17 @@
       services.forEach(s => {
         const q = Number(s.qty) || 0;
         const r = Number(s.rate) || 0;
-        const amt = q * r;
-        subtotal += amt;
+        const amt = (q > 0 ? q : 1) * r;
 
-        if (s.desc.trim() !== "" || q > 0 || r > 0) {
+        if (r > 0) {
+          subtotal += amt;
           const tr = document.createElement("tr");
           tr.className = "border-b border-stone-100";
           tr.innerHTML = `
             <td class="py-1 px-2">${s.desc || "-"}</td>
-            <td class="py-1 px-2 text-center text-stone-500">${s.qty || "-"}</td>
-            <td class="py-1 px-2 text-right">${r > 0 ? formatCurrency(r) : "-"}</td>
-            <td class="py-1 px-2 text-right font-medium">${amt > 0 ? formatCurrency(amt) : "-"}</td>
+            <td class="py-1 px-2 text-center text-stone-500">${s.qty || "1"}</td>
+            <td class="py-1 px-2 text-right">${formatCurrency(r)}</td>
+            <td class="py-1 px-2 text-right font-medium">${formatCurrency(amt)}</td>
           `;
           tableBody.appendChild(tr);
         }
@@ -588,7 +582,7 @@
       const qrDiv = document.getElementById("qrcode");
       qrDiv.innerHTML = "";
       if (!upiId) {
-        qrDiv.innerHTML = '<span class="text-[7px] text-stone-400 text-center px-1">UPI QR</span>';
+        qrDiv.innerHTML = '<span class="text-[7.5px] text-stone-400 text-center px-1">UPI QR</span>';
         return;
       }
       const payeeName = encodeURIComponent(name);
@@ -613,10 +607,10 @@
 
       const text = encodeURIComponent(
         `Dear ${brideName},\n\n` +
-        `Thank you for booking with us! Here are your booking details for Invoice #${invNo}:\n` +
+        `Thank you for choosing us for your special day! Here are the details for Invoice #${invNo}:\n` +
         `• Balance Due: ${balance}\n` +
         (upi ? `• UPI Payment ID: ${upi}\n\n` : `\n`) +
-        `Please settle the balance on or before the event date. Looking forward to making your special day memorable!`
+        `Please settle the balance on or before the event date. Looking forward to styling you!`
       );
 
       const url = bridePhone ? `https://wa.me/${bridePhone}?text=${text}` : `https://wa.me/?text=${text}`;
